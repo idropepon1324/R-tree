@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.8.1 (10165 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="41.4438000" minlon="26.4812000" maxlat="41.5322000" maxlon="26.5952000"/>
+ <node id="164574780" visible="true" version="7" changeset="6215185" timestamp="2010-10-29T08:37:17Z" user="Whitelion808" uid="242896" lat="41.5163899" lon="26.5291294"/>
+ <node id="283711169" visible="true" version="7" changeset="8849839" timestamp="2011-07-27T22:18:57Z" user="greecemapper" uid="23785" lat="41.5031784" lon="26.5323722"/>
+ <node id="299263482" visible="true" version="16" changeset="70299727" timestamp="2019-05-16T03:35:33Z" user="Joseph E" uid="539772" lat="41.5036382" lon="26.5286010">
+  <tag k="addr:postcode" v="68200"/>
+  <tag k="alt_name:mk" v="Орестијада"/>
+  <tag k="is_in" v="Orestiada municipality,Evros prefecture,Anatoliki Makedonia ke Thraki,Greece"/>
+  <tag k="name" v="Ορεστιάδα"/>
+  <tag k="name:de" v="Orestiada"/>
+  <tag k="name:el" v="Ορεστιάδα"/>
+  <tag k="name:en" v="Orestiada"/>
+  <tag k="name:et" v="Orestiáda"/>
+  <tag k="name:fr" v="Orestiada"/>
+  <tag k="name:mk" v="Кумчифтлии"/>
+  <tag k="name:ru" v="Орестиас"/>
+  <tag k="name:tr" v="Kumçiftliği"/>
+  <tag k="place" v="town"/>
+  <tag k="population" v="15246"/>
+  <tag k="wikidata" v="Q992228"/>
+  <tag k="wikipedia" v="el:Ορεστιάδα"/>
+ </node>
+ <node id="301031648" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4963329" lon="26.4929584"/>
+ <node id="301031649" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4974901" lon="26.4891819"/>
+ <node id="301031652" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4982615" lon="26.4871219"/>
+ <node id="301031655" visible="true" version="9" changeset="487503" timestamp="2009-02-16T04:42:06Z" user="AiNikolas" uid="14235" lat="41.5022470" lon="26.4775089"/>
+ <node id="301031656" visible="true" version="4" changeset="792962" timestamp="2008-11-25T19:37:21Z" user="AiNikolas" uid="14235" lat="41.5045611" lon="26.4720157"/>
+ <node id="301031658" visible="true" version="2" changeset="792962" timestamp="2008-11-25T19:37:21Z" user="AiNikolas" uid="14235" lat="41.5057181" lon="26.4696125"/>
+ <node id="301031659" visible="true" version="3" changeset="14063249" timestamp="2012-11-27T19:36:31Z" user="aitolos" uid="653" lat="41.5090327" lon="26.4662802"/>
+ <node id="301031648" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4963329" lon="26.4929584"/>
+ <node id="301031649" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4974901" lon="26.4891819"/>
+ <node id="301031652" visible="true" version="3" changeset="792962" timestamp="2008-11-25T19:37:10Z" user="AiNikolas" uid="14235" lat="41.4982615" lon="26.4871219"/>
+ <node id="301031655" visible="true" version="9" changeset="487503" timestamp="2009-02-16T04:42:06Z" user="AiNikolas" uid="14235" lat="41.5022470" lon="26.4775089"/>
+ <node id="301031656" visible="true" version="4" changeset="792962" timestamp="2008-11-25T19:37:21Z" user="AiNikolas" uid="14235" lat="41.5045611" lon="26.4720157"/>
+ <node id="301031658" visible="true" version="2" changeset="792962" timestamp="2008-11-25T19:37:21Z" user="AiNikolas" uid="14235" lat="41.5057181" lon="26.4696125"/>
+ <node id="301031659" visible="true" version="3" changeset="14063249" timestamp="2012-11-27T19:36:31Z" user="aitolos" uid="653" lat="41.5090327" lon="26.4662802"/>
+</osm>
