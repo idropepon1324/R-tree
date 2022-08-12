@@ -35,7 +35,12 @@ public class Dictionary implements Serializable {
     }
 
     public int getIndex(int i, int j){
-        return i * Options.BLOCK_SIZE + getValue(i, j);
+        if (i>=0 && i<dictionary.size()) {
+            if (j>=0 && j<dictionary.get(i).size()) {
+                return i * Options.BLOCK_SIZE + getValue(i, j);
+            }
+        }
+        return -1;
     }
 
     public int getEntrySize(int i){
@@ -43,6 +48,18 @@ public class Dictionary implements Serializable {
             return dictionary.get(i).size();
         }
         return -1;
+    }
+
+    public int getSize(){
+        return dictionary.size();
+    }
+
+    public int getTotalEntries(){
+        int count = 0;
+        for (List<Integer> l: dictionary){
+            count += l.size();
+        }
+        return count;
     }
 
     public void printDictionary(){
