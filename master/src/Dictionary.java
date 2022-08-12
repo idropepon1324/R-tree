@@ -2,15 +2,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/** This Class is used to represent a map of the Entries saved in the organised file.
+ *  The file is separated in blocks of 32KB.
+ *  The dictionary is used to return the offset where the entries are. (Bytes/Chars)
+ *  The Saver Class has a private method that saves/creates a dictionary file for future reference
+ *  located/saved in "files\dictionary.file".
+ */
 public class Dictionary implements Serializable {
     private List<List<Integer>> dictionary;
+    private String filePointing;
 
     public Dictionary(){
         dictionary = new ArrayList<>();
     }
 
-    public Dictionary(List<List<Integer>> dictionary) {
+    public Dictionary(List<List<Integer>> dictionary, String fileName) {
         this.dictionary = dictionary;
+        this.filePointing = fileName;
     }
 
     public List<List<Integer>> getDictionary(){
@@ -21,6 +29,16 @@ public class Dictionary implements Serializable {
         this.dictionary = dictionary;
     }
 
+    public String getFilePointing(){
+        return filePointing;
+    }
+
+    public void setFilePointing(String fileName){
+        filePointing = fileName;
+    }
+
+    /**  Add a new entry/List of integer to the Dictionary.
+        This represent the records of the new added block.  */
     public void addEntry(List<Integer> entry){
         dictionary.add(entry);
     }
@@ -34,18 +52,28 @@ public class Dictionary implements Serializable {
         return -1;
     }
 
-    public int getIndex(int i, int j){
-        if (i>=0 && i<dictionary.size()) {
-            if (j>=0 && j<dictionary.get(i).size()) {
-                return i * Options.BLOCK_SIZE + getValue(i, j);
+    /** Returns the offset index in the file that the 'record' is saved
+     *  in that specific 'block'.
+     *
+     *  @param block the number of the block. record - the number of record
+     *  @return int Index */
+    public int getIndex(int block, int record){
+        if (block>=0 && block<dictionary.size()) {
+            if (record>=0 && record<dictionary.get(block).size()) {
+                return block * Options.BLOCK_SIZE + getValue(block, record);
             }
         }
         return -1;
     }
 
-    public int getEntrySize(int i){
-        if(i>=0 && i<dictionary.size()){
-            return dictionary.get(i).size();
+    /** Returns the number of records that are saved in that block.
+     *  If the block doesn't exist, it returns -1.
+     *
+     * @param  block: the selected block
+     * @return int Size */
+    public int getEntrySize(int block){
+        if(block>=0 && block<dictionary.size()){
+            return dictionary.get(block).size();
         }
         return -1;
     }

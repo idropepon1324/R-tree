@@ -3,13 +3,15 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.System.exit;
 
+/** This class inherits the attributes of the FileManager Class and
+ *  creates an object used to save into.
+ *  Main methods are: saveNodes.
+ *
+ */
 public class Saver extends FileManagement {
-    public static int BLOCK_SIZE = 32768;
     // String file
 
     public Saver(){
@@ -20,6 +22,10 @@ public class Saver extends FileManagement {
         super(file);
     }
 
+    /* This method saves the List of nodes to this.file
+       It creates it, if it doesn't exist.
+       T class is the Geometry class used to store Positional  nodes.
+     */
     public <T extends Geometry> boolean saveNodes(List<PosNode<T>> nodes){
         try{
 //            List<List<Integer>> dictionary = new ArrayList<>();
@@ -62,7 +68,7 @@ public class Saver extends FileManagement {
                 *  We save the blocks as entity and the last one with the
                 *  remaining records.
                 *  */
-                if(byteCounter + myByteArray.length  < BLOCK_SIZE){
+                if(byteCounter + myByteArray.length  < Options.BLOCK_SIZE){
                     listDict.add(byteCounter);
                     recordCounter++;
                     counterOld = byteCounter;
@@ -142,7 +148,6 @@ public class Saver extends FileManagement {
 
             os.write(myByteArray);
             return true;        // Successfully saved the Dictionary
-
 
         } catch (Exception e) {
             e.printStackTrace();
