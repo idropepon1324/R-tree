@@ -38,6 +38,13 @@ public class Dictionary implements Serializable {
         return i * Options.BLOCK_SIZE + getValue(i, j);
     }
 
+    public int getEntrySize(int i){
+        if(i>=0 && i<dictionary.size()){
+            return dictionary.get(i).size();
+        }
+        return -1;
+    }
+
     public void printDictionary(){
         int count =0 ;
         for (List<Integer> list : dictionary){

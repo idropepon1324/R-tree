@@ -22,6 +22,7 @@ public class Main  {
 //            n.printInfo();
 //        }
 
+        // Save the nodes to the Organised(in blocks of 32KB) file
         if (save.saveNodes(nodes)){
             System.out.println("Successfully Saved!\n");
         } else {
@@ -47,8 +48,11 @@ public class Main  {
 //        }
 
 
-        Dictionary dictionary = load.loadDictionary();      // Dictionary works
-        dictionary.printDictionary();
+//        Dictionary dictionary = load.loadDictionary();      // Dictionary works
+//        dictionary.printDictionary();
+
+        //storageLoader.testing();
+
 
     } // End of main
 }
