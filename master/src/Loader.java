@@ -69,15 +69,15 @@ public class Loader extends FileManagement{
 //            System.out.println("yooooooo");
 //            System.out.println("yooooooo");
             b = is.readNBytes(Options.BLOCK_SIZE);
-            System.out.println(b.length);
+            //System.out.println(b.length);
 
             ByteArrayInputStream in = new ByteArrayInputStream(b);
             ObjectInputStream iss = new ObjectInputStream(in);
             int counter =0;
             while (true){
                 PosNode<T> m = (PosNode) iss.readObject();
-                System.out.println(m.getId() + " " + m.getDim() + " " + m.getFeatVec()[0] + " " + m.getFeatVec()[1]);
-                System.out.println(counter++);
+//                System.out.println(m.getId() + " " + m.getDim() + " " + m.getFeatVec()[0] + " " + m.getFeatVec()[1]);
+//                System.out.println(counter++);
                 nodeList.add(m);
             }
             //MyNodeClass m = (MyNodeClass) iss.readObject();
@@ -91,6 +91,21 @@ public class Loader extends FileManagement{
         }
 
         return nodeList;
+    }
+
+    public Dictionary loadDictionary(){
+        try{
+            InputStream is = new FileInputStream(Options.DICTIONARY_PATH);
+            byte[] b = is.readAllBytes();
+
+            ByteArrayInputStream in = new ByteArrayInputStream(b);
+            ObjectInputStream iss = new ObjectInputStream(in);
+            Dictionary dictionary = (Dictionary) iss.readObject();
+            return dictionary;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new Dictionary();    // In error modes it sends an empty dictionary
     }
 
 }

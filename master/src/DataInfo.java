@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DataInfo {
+public final class DataInfo implements Serializable {
     private int totalRecords;
     private int totalBlocks;
     private List<Block> blocks;
