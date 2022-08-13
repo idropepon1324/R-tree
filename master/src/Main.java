@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLOutput;
@@ -34,9 +35,9 @@ public class Main  {
         List<PosNode<Rectangle>> storageNodes = storageLoader.loadStorageNodes();
 
         // Print the stored Nodes
-        for(PosNode<Rectangle> n: storageNodes){
-            n.printInfo();
-        }
+//        for(PosNode<Rectangle> n: storageNodes){
+//            n.printInfo();
+//        }
 
         // Check for saved nodes that are different from the initial batch
 //        for (int i=0; i<nodes.size(); i++){
@@ -53,6 +54,8 @@ public class Main  {
 
         //storageLoader.testing();
 
+        DataInfo info = storageLoader.loadStorageInfo();
+        info.printInfo();
 
     } // End of main
 }

@@ -146,7 +146,7 @@ public class Loader extends FileManagement{
             // Skip block 0 and this is block 1 only
             int i = 1;
             int entries = dictionary.getEntrySize(i);
-            int value =  dictionary.getIndex(i,0)-Options.BLOCK_SIZE ;          // Header is the solution... 4 bytes
+            int value =  dictionary.getIndex(i,0) ;          // Header is the solution... 4 bytes
             // of the beginning of the file
             for(int k=0; k<byteLength;k++){
                 tmp[k] = b[k + value];
@@ -160,8 +160,7 @@ public class Loader extends FileManagement{
 
             // The rest of the block 1
             for (int j=1; j<entries; j++){  //Skip the first one
-                // Delete the 1Block size later down here
-                value =  dictionary.getIndex(i,j)-Options.BLOCK_SIZE ;          // Header is the solution... 4 bytes
+                value =  dictionary.getIndex(i,j) ;          // Header is the solution... 4 bytes
                 // of the beginning of the file
                 for(int k=0; k<HEADER;k++){
                     tmp[k] = b[k];
@@ -181,8 +180,7 @@ public class Loader extends FileManagement{
             for(i=2; i<blockN; i++){        // Skip block 0 & 1
                 entries = dictionary.getEntrySize(i);
                 for (int j=0; j<entries; j++){
-                                                                               // Delete the 1Block size later down here
-                    value =  dictionary.getIndex(i,j)-Options.BLOCK_SIZE ;          // Header is the solution... 4 bytes
+                    value =  dictionary.getIndex(i,j);          // Header is the solution... 4 bytes
                                                                                      // of the beginning of the file
                     //System.out.println("Value: "+(value-Options.BLOCK_SIZE*i+Options.BLOCK_SIZE));
                     for(int k=0; k<HEADER;k++){
@@ -211,6 +209,24 @@ public class Loader extends FileManagement{
         }
 
         return nodeList;
+    }
+
+    public DataInfo loadStorageInfo(){
+        try{
+            InputStream is = new FileInputStream(super.getFile());
+            byte[] blockByte = is.readNBytes(Options.BLOCK_SIZE);
+
+            ByteArrayInputStream in = new ByteArrayInputStream(blockByte);
+            ObjectInputStream oss = new ObjectInputStream(in);
+
+            DataInfo info = (DataInfo) oss.readObject();
+
+            return info;
+        } catch (Exception e){
+            System.out.println("Load Storage Info Error!");
+            e.printStackTrace();
+        }
+        return (new DataInfo()); // Fail to retrieve the saved one or it doesn't exist
     }
 
     public Dictionary loadDictionary(){

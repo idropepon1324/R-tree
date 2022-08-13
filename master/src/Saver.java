@@ -1,9 +1,8 @@
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.System.exit;
 
 
 /** This class inherits the attributes of the FileManager Class and
@@ -43,6 +42,10 @@ public class Saver extends FileManagement {
             OutputStream os = new FileOutputStream(super.getFile());
             DataInfo block0 = new DataInfo();
 
+            //Block 0
+            byte[] zeroBlockByte = new byte[Options.BLOCK_SIZE];
+            os.write(zeroBlockByte,0,zeroBlockByte.length);
+
             int recordCounter = 0;
             int counterOld;
             int blockCounter = 1; // for dictionary of records
@@ -65,8 +68,8 @@ public class Saver extends FileManagement {
 
                 /* We add the new PosNode to the block if it has space,
                 *  or else we create the next block and we save it there.
-                *  We save the blocks as entity and the last one with the
-                *  remaining records.
+                *  We save the blocks as a whole entity and the last one with the
+                *  remaining records too.
                 *  */
                 if(byteCounter + myByteArray.length  < Options.BLOCK_SIZE){
                     listDict.add(byteCounter);
@@ -127,6 +130,10 @@ public class Saver extends FileManagement {
             if(!saveDictionary(dictionary)){
                 System.out.println("Error occurred during saving the Dictionary!!!");
             }
+
+            os.close();
+            // Register the DataInfo in the block 0
+            blockZeroDataRegister(block0);
             //dictionary.printDictionary();   // Printing the Dictionary
 
         }catch (Exception e){
@@ -134,6 +141,34 @@ public class Saver extends FileManagement {
             return false;
         }
         return true;
+    }
+
+    private void blockZeroDataRegister(DataInfo block0){
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            InputStream is = new FileInputStream(super.getFile());
+
+            oos.writeObject(block0);        // Writing object to bos stream
+            oos.flush();                    // writing the unsaved of oos
+            byte[] myByteArray = bos.toByteArray();
+            byte[] allData = is.readAllBytes();
+
+            if (myByteArray.length > Options.BLOCK_SIZE){
+                System.out.printf("MAJOR BAG ALERT!!!\nBlock 0 is bigger than 32KB.");
+                exit(1);                                                                                // A hard exit of the program
+            }
+
+            for(int i=0; i<myByteArray.length;i++){ // Replace the first block
+                allData[i]=myByteArray[i];
+            }
+            OutputStream os = new FileOutputStream(super.getFile());
+
+            os.write(allData,0,allData.length);
+        } catch (Exception e){
+            System.out.println("BlockZeroDataRegister Error");
+            e.printStackTrace();
+        }
     }
 
     private boolean saveDictionary(Dictionary dictionary){
