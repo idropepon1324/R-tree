@@ -50,7 +50,7 @@ public class Loader extends FileManagement{
                     double[] vec = new double[2];
                     vec[0] = lan;
                     vec[1] = lon;
-                    PosNode node = new PosNode(id,name,2,vec);
+                    PosNode node = new PosNode(id,name,vec,Options.DIMENSIONS);
                     //node.printInfo();
 
                     //nodes[i] = node;

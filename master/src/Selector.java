@@ -1,0 +1,2 @@
+public class Selector {
+}

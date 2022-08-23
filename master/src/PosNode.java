@@ -6,12 +6,16 @@ public class PosNode<T extends Geometry> implements Serializable {
     private double[] featVec; //the feature vector
     private int dim; //the dimension of the feature vector
 
-    public PosNode(String id,String name,int dim,double[] features){
+    public PosNode(String id, String name, double[] features, int dim){
         this.id = id;
         this.name = name;
         this.dim = dim;
         featVec = new double[dim];
         featVec = features;
+    }
+
+    public PosNode(String id, String name, double[] features){
+        this(id, name, features, features.length);
     }
 
     public String getId() {
