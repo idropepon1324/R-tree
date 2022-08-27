@@ -21,7 +21,7 @@ public class Saver extends FileManagement {
         super(file);
     }
 
-    /* This method saves the List of nodes to this.file
+    /** This method saves the List of nodes to this.file
        It creates it, if it doesn't exist.
        T class is the Geometry class used to store Positional  nodes.
      */
@@ -119,6 +119,9 @@ public class Saver extends FileManagement {
                     i--;    // not eating the last save
                 }
             } // End of while loop
+            if(!dictionary.setValue(1,0, 4)){   // Header Security of 4 bytes
+                System.out.println("Error during changing the first entry to preserve the Header!");
+            }
             // Write the remaining to the file
             if(recordCounter!=0){
                 dictionary.addEntry(listDict);  // Save last entries of dictionary

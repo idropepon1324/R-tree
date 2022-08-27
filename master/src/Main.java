@@ -54,8 +54,14 @@ public class Main  {
 
         //storageLoader.testing();
 
-        DataInfo info = storageLoader.loadStorageInfo();
-        info.printInfo();
+        // Block 0 Printing Data
+//        DataInfo info = storageLoader.loadStorageInfo();
+//        info.printInfo();
+
+
+        // Testing the printing of the first saved entry after the changes to the code
+//        PosNode<Rectangle> node = storageLoader.getStorageNode(2, 0);
+//        node.printInfo();
 
     } // End of main
 }

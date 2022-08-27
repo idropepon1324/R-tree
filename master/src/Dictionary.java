@@ -44,12 +44,24 @@ public class Dictionary implements Serializable {
     }
 
     public int getValue(int i, int j){
+        // Checking the validity of the dimensions given
         if (i>=0 && i<dictionary.size()) {
             if (j>=0 && j<dictionary.get(i).size()) {
                 return dictionary.get(i).get(j);
             }
         }
         return -1;
+    }
+
+    public boolean setValue(int i, int j, int value){
+        // Checking the validity of the dimensions given
+        if (i>=0 && i<dictionary.size()){
+            if(j>=0 && j<dictionary.get(i).size()){
+                dictionary.get(i).set(j,value);
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Returns the offset index in the file that the 'record' is saved

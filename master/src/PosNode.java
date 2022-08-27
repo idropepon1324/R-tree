@@ -14,6 +14,10 @@ public class PosNode<T extends Geometry> implements Serializable {
         featVec = features;
     }
 
+    public PosNode(){
+        //
+    }
+
     public PosNode(String id, String name, double[] features){
         this(id, name, features, features.length);
     }
