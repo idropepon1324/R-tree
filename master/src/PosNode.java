@@ -1,5 +1,9 @@
 import java.io.Serializable;
 
+/**
+ * This class represent the Positional Node.
+ * @param <T>
+ */
 public class PosNode<T extends Geometry> implements Serializable {
     private String id; //the id
     private String name; //the name

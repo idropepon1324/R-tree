@@ -31,12 +31,12 @@ public final class Rectangle implements Geometry{
 
     @Override
     public double distance(Rectangle r){
-
+        return 0;
     }
 
     @Override
     public Rectangle mbr(){
-
+        return this;
     }
 
     @Override
@@ -71,12 +71,17 @@ public final class Rectangle implements Geometry{
 
     //Rectangle add(Rectangle r);
 
-    public boolean contains(double[] featVec){
-        if (featVec.length != getSize()){
+    /**
+     * Checks if a point is part of a rectangle.
+     * @param point
+     * @return
+     */
+    public boolean contains(double[] point){
+        if (point.length != getSize()){
             return false;
         }
         for(int i=0; i<getSize(); i++){
-            if(!(featVec[i]>=vector1[i] && featVec[i]<=vector2[i]) ){
+            if(!(point[i]>=vector1[i] && point[i]<=vector2[i]) ){
                 return false;
             }
         }

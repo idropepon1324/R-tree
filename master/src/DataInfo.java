@@ -2,6 +2,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This represent the block 0 information of the saved nodes.
+ * Information like total Records and total Blocks.
+ */
 public final class DataInfo implements Serializable {
     private int totalRecords;
     private int totalBlocks;
