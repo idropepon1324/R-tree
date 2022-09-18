@@ -5,6 +5,7 @@ public class LeafNode implements TreeNode {
     private List<Entry> entries;
     private Rectangle rectangle;
     private Context context;
+    private int index;
 
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context){
         this.entries = entries;
@@ -32,5 +33,8 @@ public class LeafNode implements TreeNode {
         return entries.get(i);
     }
 
+    public int getIndex(){
+        return index;
+    }
 
 }

@@ -10,6 +10,7 @@ public class NotLeafNode implements TreeNode {
     private List<? extends TreeNode> children;
     private Rectangle rectangle;
     private Context context;
+    private int index;
 
     public NotLeafNode(List<? extends TreeNode> children, Rectangle rectangle, Context context){
         this.children = children;
@@ -40,6 +41,10 @@ public class NotLeafNode implements TreeNode {
 
     public List<? extends TreeNode> entry(int i) {
         return children;
+    }
+
+    public int getIndex(){
+        return index;
     }
 
 }
