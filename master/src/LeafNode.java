@@ -29,12 +29,16 @@ public class LeafNode implements TreeNode {
         return context;
     }
 
-    public Entry entry(int i) {
+    public Entry entryChild(int i) {
         return entries.get(i);
     }
 
-    public int getIndex(){
-        return index;
+    public Rectangle getRectangle(){
+        return rectangle;
+    }
+
+    public TreeNode child(int i) {
+        return null;
     }
 
 }

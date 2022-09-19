@@ -16,4 +16,8 @@ public class Entry {
     public int getRecordId(){
         return recordId;
     }
+
+    public double[] getFeatVec(){
+        return featVec;
+    }
 }

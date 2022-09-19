@@ -43,8 +43,9 @@ public class NotLeafNode implements TreeNode {
         return children;
     }
 
-    public int getIndex(){
-        return index;
+    public Rectangle getRectangle(){
+        return rectangle;
     }
 
+    public Entry entryChild(int i){return null};
 }
