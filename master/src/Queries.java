@@ -8,7 +8,13 @@ public class Queries {
     private PriorityQueue<TreeNode> minHeap = new PriorityQueue<TreeNode>(new Comparator<TreeNode>() {
         @Override
         public int compare(TreeNode o1, TreeNode o2) {
-            return - Double.compare(o1.getRectangle().getVector1()[0]+o1.getRectangle().getVector1()[1], o2.getRectangle().getVector1()[0]+o2.getRectangle().getVector1()[1]);
+            double distO1 = 0;
+            double distO2 = 0;
+            for(int i=0;i<o1.getRectangle().getVector1().length;i++){
+                distO1 += o1.getRectangle().getVector1()[i];
+                distO2 += o2.getRectangle().getVector1()[i];
+            }
+            return - Double.compare(distO1,distO2);
         }
     });
     //list for skyline bbs
