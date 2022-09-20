@@ -13,13 +13,13 @@ public class LeafNode implements TreeNode {
         this.context = context;
     }
     
-    public List<TreeNode> add(Entry entry) {
-        return NonLeafHelper.add(entry, this);
-    }
-
-    public NodeAndEntries<T, S> delete(Entry<? extends T, ? extends S> entry, boolean all) {
-        return LeafHelper.delete(entry, all, this);
-    }
+//    public List<TreeNode> add(Entry entry) {
+//        return NonLeafHelper.add(entry, this);
+//    }
+//
+//    public NodeAndEntries<T, S> delete(Entry<? extends T, ? extends S> entry, boolean all) {
+//        return LeafHelper.delete(entry, all, this);
+//    }
 
     public int childrenSize(){
         return entries.size();
@@ -31,6 +31,10 @@ public class LeafNode implements TreeNode {
 
     public Entry entryChild(int i) {
         return entries.get(i);
+    }
+
+    public List<Entry> entries(){
+        return entries;
     }
 
     public Rectangle getRectangle(){

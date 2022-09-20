@@ -19,13 +19,13 @@ public class NotLeafNode implements TreeNode {
     }
 
 
-    public List<TreeNode> add(Entry entry) {
-        return NonLeafFunctions.add(entry, this);
-    }
-
-    public NodeAndEntries delete(Entry entry, boolean all) {
-        return NonLeafFunctions.delete(entry, all, this);
-    }
+//    public List<TreeNode> add(Entry entry) {
+//        return NonLeafFunctions.add(entry, this);
+//    }
+//
+//    public NodeAndEntries delete(Entry entry, boolean all) {
+//        return NonLeafFunctions.delete(entry, all, this);
+//    }
 
     public int childrenSize() {
         return children.size();
@@ -39,7 +39,7 @@ public class NotLeafNode implements TreeNode {
         return children.get(i);
     }
 
-    public List<? extends TreeNode> entry(int i) {
+    public List<? extends TreeNode> entries() {
         return children;
     }
 
@@ -47,5 +47,5 @@ public class NotLeafNode implements TreeNode {
         return rectangle;
     }
 
-    public Entry entryChild(int i){return null};
+    public Entry entryChild(int i){return null;};
 }
