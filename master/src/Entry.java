@@ -1,4 +1,4 @@
-public class Entry {
+public class Entry implements HasGeometry {
     private double[] featVec;
     private int blockId;
     private int recordId;
@@ -20,4 +20,7 @@ public class Entry {
     public double[] getFeatVec(){
         return featVec;
     }
+
+    public double[] getPoint() { return featVec; }
+
 }

@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public final class Rectangle implements Geometry{
+public final class Rectangle implements Geometry, HasGeometry{
     private double[] vector1;
     private double[] vector2;
 
