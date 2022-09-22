@@ -3,29 +3,50 @@ import java.util.Queue;
 
 public class Search {
 
-    private List<Entry> finalEntries;
-    private List<TreeNode> TreeNodes;
+
 
     public Search(TreeNode root, Entry e){
 
     }
 
+
+    private List<Entry> finalEntries;
+    private Queue<TreeNode> tnQueue;
     public List<Entry> searchArea(TreeNode root, Rectangle rect){
 
 
 
-        searchAreaHelper(finalEntries,TreeNodes,rect);
+        searchAreaHelper(rect);
 
 
         return null;
     }
 
+    public void searchAreaHelper(Rectangle rect){
+
+        if(tnQueue.isEmpty()){
+            return;
+        }
+
+        TreeNode tn = tnQueue.poll();
+
+        if(tn instanceof LeafNode){
+
+        }else {
+            if(isOverlaping(rect,tn.getRectangle())){
+                for(int i=0;i<tn.childrenSize();i++){
+                    tnQueue.add(tn.child(i));
+                }
+            }
+        }
+
+    }
+
 
     private boolean isOverlaping(Rectangle r1,Rectangle r2){
-        boolean overlaps = true;
         for (int i=0;i<r1.getSize();i++){
-            if(r1.getVector1()[i]<=r2.getVector1()[i]){
-
+            if(r1.getVector1()[i]>r2.getVector2()[i] || r2.getVector1()[i]>r1.getVector2()[i]){
+                return false;
             }
         }
         return true;
