@@ -32,39 +32,65 @@ public class Search {
     }
 
 
-    public Queue<TreeNode> tQueue;
-    public boolean entryExists;
+
+
+
+
+    /////////////////////---------------- search entry in the tree ----------------/////////////////////
+    private Queue<TreeNode> tQueue;
+    private boolean exists;
     public boolean searchEntry(TreeNode root, Entry e){
-        entryExists = false;
+        exists = false;
 
-
-
+        tQueue.add(root);
+        searchEntryHelper(e);
+        if(exists==true) {
+            return true;
+        }else {
+            return false;
+        }
 
     }
 
-    private void searchEntry(Entry e){
-        TreeNode tn = tQueue.poll();
+    private void searchEntryHelper(Entry e){
+
 
         //an oura keni termatise
-        if(tQueue.isEmpty()){
+        if(tQueue.isEmpty() || exists == true){
             return;
         }
 
+        TreeNode tn = tQueue.poll();
+
         //an ine leaf tsekare an ine mesa to e
         if(tn instanceof LeafNode){
+            for(int i=0;i<tn.childrenSize();i++){
+                int counterSimilarities = 0;
+                for(int j=0;j<e.getFeatVec().length;j++){
+                    if(e.getFeatVec()[j]==tn.entryChild(i).getFeatVec()[j]){
+                        counterSimilarities += 1;
+                    }else {
+                        break;
+                    }
+                }
 
+                if(counterSimilarities == e.getFeatVec().length){
+                    exists = true;
+                }
+            }
         }else { //an den ine leaf tsekare an tha borouse na ine mesa kai an nai tote valto stin oura
-            if(couldBeIn(tn,e)){
+            if(couldBeIn(e,tn)){
                 for(int i=0;i<tn.childrenSize();i++){
                     tQueue.add(tn.child(i));
                 }
-            }else {
-                searchEntry(e);
             }
         }
+        searchEntryHelper(e);
+        return;
+
     }
 
-    private boolean couldBeIn(TreeNode tn, Entry e){
+    private boolean couldBeIn(Entry e,TreeNode tn){
         int counter1 = 0;
         int counter2 = 0;
         for(int i=0;i<e.getFeatVec().length;i++){
@@ -74,7 +100,7 @@ public class Search {
                 break;
             }
             if(e.getFeatVec()[i]<=tn.getRectangle().getVector2()[i]){
-                counter1 += 1;
+                counter2 += 1;
             }else {
                 break;
             }
@@ -88,4 +114,5 @@ public class Search {
         }
 
     }
+    /////////////////////---------------- search entry in the tree ----------------/////////////////////
 }
