@@ -5,23 +5,19 @@ public class Search {
 
 
 
-    public Search(TreeNode root, Entry e){
+    public Search(){
 
     }
 
-
+    /////////////////////---------------- search entries rectangle ----------------/////////////////////
     private List<Entry> finalEntries;
     private Queue<TreeNode> tnQueue;
     public List<Entry> searchArea(TreeNode root, Rectangle rect){
 
-
-
+        tQueue.add(root);
         searchAreaHelper(rect);
-
-
-        return null;
+        return finalEntries;
     }
-
     public void searchAreaHelper(Rectangle rect){
 
         if(tnQueue.isEmpty()){
@@ -31,7 +27,11 @@ public class Search {
         TreeNode tn = tnQueue.poll();
 
         if(tn instanceof LeafNode){
-
+            for(int i=0;i<tn.childrenSize();i++){
+                if(entryInRect(tn.entryChild(i),rect)){
+                    finalEntries.add(tn.entryChild(i));
+                }
+            }
         }else {
             if(isOverlaping(rect,tn.getRectangle())){
                 for(int i=0;i<tn.childrenSize();i++){
@@ -42,7 +42,6 @@ public class Search {
 
     }
 
-
     private boolean isOverlaping(Rectangle r1,Rectangle r2){
         for (int i=0;i<r1.getSize();i++){
             if(r1.getVector1()[i]>r2.getVector2()[i] || r2.getVector1()[i]>r1.getVector2()[i]){
@@ -52,7 +51,31 @@ public class Search {
         return true;
     }
 
+    private boolean entryInRect(Entry e,Rectangle rect){
+        int counter1 = 0;
+        int counter2 = 0;
+        for(int i=0;i<e.getFeatVec().length;i++){
+            if(e.getFeatVec()[i]>=rect.getVector1()[i]){
+                counter1 += 1;
+            }else{
+                break;
+            }
+            if(e.getFeatVec()[i]<=rect.getVector2()[i]){
+                counter2 += 1;
+            }else {
+                break;
+            }
 
+        }
+
+        if (counter1==e.getFeatVec().length && counter2==e.getFeatVec().length){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+    /////////////////////---------------- search entries rectangle ----------------/////////////////////
 
 
 

@@ -2,8 +2,16 @@ import java.util.*;
 
 public class Queries {
 
+
     private Optional<? extends TreeNode> root;
 
+
+
+    public Queries(){
+        root = null;
+    }
+
+    /////////////////////--------------------skyline bbs---------------------////////////////////////////
     //min heap for bbs
     private PriorityQueue<TreeNode> minHeap = new PriorityQueue<TreeNode>(new Comparator<TreeNode>() {
         @Override
@@ -19,12 +27,6 @@ public class Queries {
     });
     //list for skyline bbs
     private List<Entry> skyLineList;
-
-
-    public Queries(){
-        root = null;
-    }
-
 
     private List<Entry> skyLineBBS(TreeNode root){
 
@@ -152,4 +154,11 @@ public class Queries {
 
         return null;
     }
+    /////////////////////--------------------skyline bbs---------------------////////////////////////////
+
+    /////////////////////--------------------range queries---------------------////////////////////////////
+
+
+
+
 }
