@@ -5,7 +5,7 @@ public class Search {
 
 
 
-    public Search(TreeNode root, Entry e){
+    public Search(){
 
     }
 
