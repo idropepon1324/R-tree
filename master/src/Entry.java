@@ -21,6 +21,8 @@ public class Entry implements HasGeometry {
         return featVec;
     }
 
+    public double[] getVector() { return featVec; }
+
     public double[] getPoint() { return featVec; }
 
 }

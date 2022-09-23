@@ -48,4 +48,8 @@ public class NotLeafNode implements TreeNode {
     }
 
     public Entry entryChild(int i){return null;};
+
+    public List<TreeNode> children(){
+        return (List<TreeNode>) children;
+    }
 }

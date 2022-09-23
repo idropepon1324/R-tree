@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public final class Rectangle implements Geometry, HasGeometry{
     private double[] vector1;
@@ -9,9 +6,38 @@ public final class Rectangle implements Geometry, HasGeometry{
 
     /*
      * Testing things about this class
+     * Overlap/IntersectArea works.
      *
      */
     public static void main(String[] args) {
+        // Creating two rectangle and checking the intersectionArea() if works properly
+        Rectangle r1, r2;
+        double[] v1 = new double[2];
+        double[] v2 = new double[2];
+        v1[0] = 1;
+        v1[1] = 1;
+        v2[0] = 4;
+        v2[1] = 3;
+        r1 = new Rectangle(v1.clone(), v2.clone());
+        v1[0] = 3.5;
+        v1[1] = 2;
+        v2[0] = 9;
+        v2[1] = 2.5;
+        r2 = new Rectangle(v1.clone(), v2.clone());
+
+        System.out.println("Overlap area:"+ r1.intersectionArea(r2));        // Answer 0.25
+
+        //=========== Checking Collections.sort() method
+        List<Double> listDouble = new ArrayList<>();
+        listDouble.add(v1[0]);
+        listDouble.add(v2[0]);
+        listDouble.add(v1[1]);
+        listDouble.add(v2[1]);
+        Collections.sort(listDouble);
+        for (double d: listDouble){
+            System.out.print(d+" ");
+        }
+        System.out.println();
 
     }
 
