@@ -43,9 +43,9 @@ public class Utils {
         points.add(tmp2.clone());
 
         Rectangle rnew = mbrRect(rectangles);
-        Rectangle rnew2 = mbrPoints(points);
+        //Rectangle rnew2 = mbrPoints(points);
 
-        rnew2.print();
+        //rnew2.print();
     }
 
     private Utils(){
@@ -90,10 +90,16 @@ public class Utils {
      * This function takes points and returns the
      * minimum bounding rectangle that includes all
      * the points given.
-     * @param points A list of points
+     * @param objects A list of Entry Points
      * @return Minimum bounding rectangle
      */
-    public static Rectangle mbrPoints(List<double[]> points){
+    public static Rectangle mbrPoints(List<Entry> objects){
+        List<double []> points = new ArrayList<>();
+
+        for(Entry e: objects){
+            points.add(e.getVector());
+        }
+
         int MAX_DIMENSIONS = points.get(0).length;
         Rectangle mbr;
         double[] vec1 = new double[MAX_DIMENSIONS];

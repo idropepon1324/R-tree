@@ -1,7 +1,5 @@
-import com.sun.source.tree.Tree;
-
 import java.util.*;
-import java.util.function.ToDoubleBiFunction;
+
 
 public class Splitter {
 
@@ -31,26 +29,9 @@ public class Splitter {
     }
 
     public static void main(String[] args) {
-//        Splitter s = new Splitter();
-//        List<NotLeafNode> list = new ArrayList<>();
-//        list.add(new NotLeafNode(null,null,null));
-        //s.split(list,3);
-//
-//        HashMap<Double, String> ex = new HashMap<>();
-//        ex.put(70.2,"Rec1");
-//        ex.put(30.1,"Rec2");
-//        ex.put(59.9,"Rec3");
-//        ex.put(121.2,"Rec4");
-//        ex.put(11.3,"Rec5");
-//        TreeMap<Double, String> sorted = new TreeMap<>(ex);
-//        Collection<String> str = sorted.values();
-//        System.out.println(str);
-//        List<String> stringList = new ArrayList<>();
-//        for(String s:str){
-//            stringList.add(s);
-//        }
-//
-//        System.out.println(stringList.subList(2,4));
+        //TODO Finishing this part and the testing the split to see if it works in future
+        //TODO Beginning of the report and the tidying up the warnings and the comments in the finished parts of the algorithm.
+
         double[] v = new double[2];
         double[] v2 = new double[2];
         v[0] = 1.2;
@@ -81,12 +62,21 @@ public class Splitter {
 
         //List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
 
+        double[] S = new double[10];
+        for (double d: S){
+            System.out.println(d);
+        }
+
+        // Testing split... Sometime in the future
+        Random r = new Random();
+        List<Rectangle> rectangles = new ArrayList<>();
+        double rangeMin = -180.0;
+        double rangeMax = 180.0;
+        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 
     }
     public <G extends TreeNode> List<NotLeafNode> split(NotLeafNode node, G addUp, Context context){
         int axis;
-        //List<T> listPair = new ArrayList<>();
-        List<? extends TreeNode> entries;
         List<NotLeafNode> splitNodes = new ArrayList<>();       // 2 in number
         List<Rectangle> rectangles = new ArrayList<>();
 
@@ -156,60 +146,74 @@ public class Splitter {
         return splitNodes;
     }
 
-//    public List<LeafNode> split(LeafNode node, Entry addUp, Context context){
-//
-//    }
-
-
-    public <T extends TreeNode, G extends HasGeometry> List<T> split(T node, G addUp, Context context){
-
+    public List<LeafNode> split(LeafNode node, Entry addUp, Context context){
         int axis;
-        //List<T> listPair = new ArrayList<>();
-        List<? extends TreeNode> entries;
-        List<Entry> pointsEntries;
-        List<double[]> points = new ArrayList<>();
-        List<G> objects = new ArrayList<>();
-        List<T> splitNodes = new ArrayList<>();
+        List<LeafNode> splitNodes = new ArrayList<>();       // 2 in number
+
+        List<Entry> list1 = new ArrayList<>();
+        List<Entry> list2 = new ArrayList<>();
+        List<Entry> objects = node.entries();
+        objects.add(addUp);
 
 
-        if(node.getClass().equals(NotLeafNode.class)){  // Here we have T = NotLeafNode & G = Rectangle
+        // Two algorithms
+        axis = chooseSplitAxesPoint(objects, context);
+        List<List<Entry>> listPair = chooseSplitIndexPoint(axis, objects, context);
 
-            entries = ((NotLeafNode) node).entries();
+        splitNodes.add(new LeafNode(list1, Utils.mbrPoints(listPair.get(0)), context));
+        splitNodes.add(new LeafNode(list2, Utils.mbrPoints(listPair.get(1)), context));
 
-            for(int i=0; i<entries.size(); i++){
-                objects.add((G)entries.get(i).getRectangle());
-            }
-            objects.add(addUp);
-
-            //
-            axis = chooseSplitAxesRect((List<Rectangle>)objects, context);
-            List<List<Rectangle>> listPair = chooseSplitIndexRect(axis, (List<Rectangle>)objects, context);
-
-            //splitNodes.add(new NotLeafNode(listPair.get(0), Utils.mbrRect(listPair.get(0)), context ));
-
-        } else if (node.getClass().equals(LeafNode.class)){ // Here we have T = LeafNode & G = Entry
-
-            pointsEntries = ((LeafNode) node).entries();
-            for(int i=0; i<pointsEntries.size(); i++){
-                points.add(pointsEntries.get(i).getPoint());
-            }
-            points.add(((Entry)addUp).getPoint());
-
-
-        }
-
-        return new ArrayList<>();
+        return splitNodes;
     }
+
+
+//    public <T extends TreeNode, G extends HasGeometry> List<T> split(T node, G addUp, Context context){
+//
+//        int axis;
+//        //List<T> listPair = new ArrayList<>();
+//        List<? extends TreeNode> entries;
+//        List<Entry> pointsEntries;
+//        List<double[]> points = new ArrayList<>();
+//        List<G> objects = new ArrayList<>();
+//        List<T> splitNodes = new ArrayList<>();
+//
+//
+//        if(node.getClass().equals(NotLeafNode.class)){  // Here we have T = NotLeafNode & G = Rectangle
+//
+//            entries = ((NotLeafNode) node).entries();
+//
+//            for(int i=0; i<entries.size(); i++){
+//                objects.add((G)entries.get(i).getRectangle());
+//            }
+//            objects.add(addUp);
+//
+//            //
+//            axis = chooseSplitAxesRect((List<Rectangle>)objects, context);
+//            List<List<Rectangle>> listPair = chooseSplitIndexRect(axis, (List<Rectangle>)objects, context);
+//
+//            //splitNodes.add(new NotLeafNode(listPair.get(0), Utils.mbrRect(listPair.get(0)), context ));
+//
+//        } else if (node.getClass().equals(LeafNode.class)){ // Here we have T = LeafNode & G = Entry
+//
+//            pointsEntries = ((LeafNode) node).entries();
+//            for(int i=0; i<pointsEntries.size(); i++){
+//                points.add(pointsEntries.get(i).getPoint());
+//            }
+//            points.add(((Entry)addUp).getPoint());
+//
+//
+//        }
+//
+//        return new ArrayList<>();
+//    }
 
     private int chooseSplitAxesRect(List<Rectangle> objects, Context context){
         int m = context.minChildren();
         int M = context.maxChildren();
         int MAX_DIMENSIONS = objects.get(0).getSize();
 
+        // Initialization of the Sums to 0.0
         double[] S = new double[MAX_DIMENSIONS];  // an S for each dimension
-        for(int i=0; i<S.length;i++){   // Initialization of the Sums
-            S[i] = 0;
-        }
 
         // For each axis/dimension
         for (int i=0; i<MAX_DIMENSIONS; i++){
@@ -246,25 +250,23 @@ public class Splitter {
         return minPosition(S);
     }
 
-    private int chooseSplitAxesPoint(List<double[]> objects, Context context){
+    private int chooseSplitAxesPoint(List<Entry> objects, Context context){
         int m = context.minChildren();
         int M = context.maxChildren();
-        int MAX_DIMENSIONS = objects.get(0).length;
+        int MAX_DIMENSIONS = objects.get(0).getVector().length;
 
+        // Initialization of the Sums to 0.0
         double[] S = new double[MAX_DIMENSIONS];  // an S for each dimension
-        for(int i=0; i<S.length;i++){   // Initialization of the Sums
-            S[i] = 0;
-        }
 
         for (int i=0; i<MAX_DIMENSIONS; i++){
 
             // Creating a Hashmap with the lower point of the rectangle, in order to sort
-            HashMap<Double, double[]> pointsMap = new HashMap<>();
-            for (double[] p: objects){
-                pointsMap.put(p[i], p);
+            HashMap<Double, Entry> pointsMap = new HashMap<>();
+            for (Entry e: objects){
+                pointsMap.put(e.getVector()[i], e);
             }
-            TreeMap<Double, double[]> sorted = new TreeMap<>(pointsMap);
-            List<double[]> sortedPoints = new ArrayList<>(sorted.values());
+            TreeMap<Double, Entry> sorted = new TreeMap<>(pointsMap);
+            List<Entry> sortedPoints = new ArrayList<>(sorted.values());
             for(int k=0; k<(M-2*m+2); k++){
                 S[i] += Utils.mbrPoints(sortedPoints.subList(0,m+k)).perimeter() + Utils.mbrPoints(sortedPoints.subList(m+k,M)).perimeter();
             }
@@ -278,7 +280,6 @@ public class Splitter {
     private List<List<Rectangle>> chooseSplitIndexRect(int axis, List<Rectangle> objects, Context context){
         int m = context.minChildren();
         int M = context.maxChildren();
-        int MAX_DIMENSIONS = objects.get(0).getSize();
         double minOverlapArea, overlapArea, minArea, Area;
 
         List<List<Rectangle>> listPair = new ArrayList<>();
@@ -348,30 +349,46 @@ public class Splitter {
     }
 
     // Don't know if it is correct... it was late night when I wrote this
-    private void chooseSplitIndexPoint(int axis, List<Entry> objects, Context context){
+    private List<List<Entry>> chooseSplitIndexPoint(int axis, List<Entry> objects, Context context){
         int m = context.minChildren();
         int M = context.maxChildren();
-        int MAX_DIMENSIONS = objects.get(0).getFeatVec().length;
         double minOverlapArea, overlapArea, minArea, Area;
 
-        List<List<Rectangle>> listPair = new ArrayList<>();
+        List<List<Entry>> listPair = new ArrayList<>();
 
-        HashMap<Double, Entry> rectangleMap = new HashMap<>();
+        HashMap<Double, Entry> entryMap = new HashMap<>();
         for (Entry p: objects){
             double[] point = p.getVector();
-            rectangleMap.put(point[axis], p);
+            entryMap.put(point[axis], p);
         }
-        TreeMap<Double, Entry> sorted = new TreeMap<>(rectangleMap);
+        TreeMap<Double, Entry> sorted = new TreeMap<>(entryMap);
         List<Entry> sortedPoints = new ArrayList<>(sorted.values());
 
         // Taking the first as the min
-//        minOverlapArea = Utils.mbrPoints(sortedPoints.subList(0,m)).perimeter() + Utils.mbrPoints(sortedPoints.subList(m,M)).perimeter();
-//        listPair.add(sortedPoints.subList(0,m));
-//        listPair.add(sortedPoints.subList(m,M));
-        //TODO Tomorrow's Plan is to fix the sortedPoints to take List<Entry> and not a List<Double> and taking care of the chooseSplitAxePoint too
-        //TODO Finishing this part and the testing the split to see if it works
-        //TODO Beginning of the report and the tidying up of the warnings and the comments in the finished parts of the algorithm.
+        minOverlapArea = Utils.mbrPoints(sortedPoints.subList(0,m)).perimeter() + Utils.mbrPoints(sortedPoints.subList(m,M)).perimeter();
+        listPair.add(sortedPoints.subList(0,m));
+        listPair.add(sortedPoints.subList(m,M));
 
+        for(int k=1; k<(M-2*m+2); k++){         // Continue for the rest distributions
+            overlapArea = Utils.mbrPoints(sortedPoints.subList(0,m+k)).intersectionArea(Utils.mbrPoints(sortedPoints.subList(m+k,M)));
+            if (minOverlapArea > overlapArea ){
+                minOverlapArea = overlapArea;
+                listPair.clear();
+                listPair.add(sortedPoints.subList(0,m+k));
+                listPair.add(sortedPoints.subList(m+k,M));
+
+            } else if (minOverlapArea == overlapArea ) {    // a rare occasion
+                minArea = Utils.mbrPoints(listPair.get(0)).area() + Utils.mbrPoints(listPair.get(1)).area();
+                Area = Utils.mbrPoints(sortedPoints.subList(0,m)).area() + Utils.mbrPoints(sortedPoints.subList(m,M)).area();
+                if (minArea > Area){
+                    listPair.clear();
+                    listPair.add(sortedPoints.subList(0,m+k));
+                    listPair.add(sortedPoints.subList(m+k,M));
+                }
+            }
+        }
+
+        return listPair;
     }
 
     private int minPosition(double[] S){
@@ -395,8 +412,7 @@ public class Splitter {
             rectangleMap.put(lowerPoint[axis], r);
         }
         TreeMap<Double, Rectangle> sorted = new TreeMap<>(rectangleMap);
-        List<Rectangle> sortedRect = new ArrayList<>(sorted.values());
-        return sortedRect;
+        return new ArrayList<>(sorted.values());
     }
 
     private List<Rectangle> sortRectanglesUpper (List<Rectangle> objects, int axis){
@@ -407,7 +423,6 @@ public class Splitter {
             rectangleMap.put(lowerPoint[axis], r);
         }
         TreeMap<Double, Rectangle> sorted = new TreeMap<>(rectangleMap);
-        List<Rectangle> sortedRect = new ArrayList<>(sorted.values());
-        return sortedRect;
+        return new ArrayList<>(sorted.values());
     }
 }
