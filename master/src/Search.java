@@ -33,7 +33,7 @@ public class Search {
                 }
             }
         }else {
-            if(isOverlaping(rect,tn.getRectangle())){
+            if(isOverlapping(rect,tn.getRectangle())){
                 for(int i=0;i<tn.childrenSize();i++){
                     tnQueue.add(tn.child(i));
                 }
@@ -42,7 +42,7 @@ public class Search {
 
     }
 
-    private boolean isOverlaping(Rectangle r1,Rectangle r2){
+    private boolean isOverlapping(Rectangle r1,Rectangle r2){
         for (int i=0;i<r1.getSize();i++){
             if(r1.getVector1()[i]>r2.getVector2()[i] || r2.getVector1()[i]>r1.getVector2()[i]){
                 return false;

@@ -30,7 +30,7 @@ public class Queries {
 
     private List<Entry> skyLineBBS(TreeNode root){
 
-        skyLineList = new ArrayList<Entry>();
+        skyLineList = new ArrayList<>();
         for(int i=0;i<root.childrenSize();i++){
             minHeap.add(root.child(i));
         }
@@ -43,12 +43,12 @@ public class Queries {
 
     private List<Entry> skyLineBBSHelper(PriorityQueue<TreeNode> minHeap,List<Entry> skyLineList){
         TreeNode tn;
-        tn = minHeap.poll();
 
         if(minHeap.isEmpty()){
             return skyLineList;
         }
 
+        tn = minHeap.poll();
         if(tn instanceof LeafNode){
             Entry minEnt = tn.entryChild(0);
             List<Entry> safeEntries = new ArrayList<Entry>();
