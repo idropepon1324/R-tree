@@ -3,7 +3,7 @@ import java.util.List;
 /**
  * This is the basic interface that connects all the Tree nodes.
  */
-public interface TreeNode {
+public interface TreeNode extends HasGeometry{
     public Rectangle getRectangle();
     public int childrenSize();
     public TreeNode child(int i);
