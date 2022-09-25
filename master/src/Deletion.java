@@ -10,9 +10,9 @@ public class Deletion {
 
 
     private List<TreeNode> listOfTn;
-    public boolean deleteEntry(TreeNode root,Entry e){
+    public boolean deleteEntry(RTree r, TreeNode root,Entry e){
         TreeNode tn = returnTnOfSearchedEntry(root,e);
-       listOfTn = new ArrayList<>();
+        listOfTn = new ArrayList<>();
         List<Entry> listOfEn = new ArrayList<>();
 
         if(tn == null){
@@ -45,9 +45,13 @@ public class Deletion {
     }
 
     private List<Entry> entriesHelper;
-    private void deleteEntryHelper(TreeNode root, TreeNode tn){
+    private void deleteEntryHelper(RTree r, TreeNode root, TreeNode tn){
 
         if(tn.getParent().getRectangle().isEqualTo(root.getRectangle())){
+
+            if(tn.childrenSize()<2){
+                r.setRoot(tn.child(0));
+            }
 
             List<Entry> listOfEn = new ArrayList<>();
 
@@ -60,12 +64,14 @@ public class Deletion {
                 //insert entriesHelper.get(i);
             }
 
+
+
         }else{
             TreeNode p = tn.getParent();
             if(tn.childrenSize()-1<tn.context().minChildren()){
                 p.deleteChild(tn);
                 listOfTn.add(tn);
-                deleteEntryHelper(root, tn);
+                deleteEntryHelper(r, root, tn);
             }else {
                 List<Entry> listOfEn = new ArrayList<>();
 

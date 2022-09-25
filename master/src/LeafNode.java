@@ -67,4 +67,12 @@ public class LeafNode implements TreeNode {
 //    public void fixRectangle(){
 //        rectangle = Utils.mbrPoints(entries);
 //    }
+
+    public void deleteChild(Entry e){
+        entries.remove(e);
+    }
+
+    public void deleteChild(TreeNode tn){
+        return;
+    }
 }

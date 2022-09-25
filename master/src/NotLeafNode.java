@@ -1,5 +1,6 @@
+import javax.print.DocFlavor;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This class represent a R* node of the tree that is not a leaf.
@@ -21,12 +22,9 @@ public class NotLeafNode implements TreeNode {
     }
 
 
-    public <T extends HasGeometry> void add(T entry) {
-        List<? extends TreeNode> tmp = NonLeafFunctions.add(entry, this);
-        if (tmp != null){
-            children = tmp;
-        }
-    }
+//    public List<TreeNode> add(Entry entry) {
+//        return NonLeafFunctions.add(entry, this);
+//    }
 //
 //    public NodeAndEntries delete(Entry entry, boolean all) {
 //        return NonLeafFunctions.delete(entry, all, this);
@@ -58,11 +56,35 @@ public class NotLeafNode implements TreeNode {
         return (List<TreeNode>) children;
     }
 
-    public void fixMbr(){
-        rectangle = Utils.mbr(this);
-    }
-
-
     public TreeNode getParent(){ return parent; }
 
+    public void fixRectangle(){
+        /*
+        for(int i=0;i<rectangle.getVector1().length;i++){
+            double max = entryChild(0).getFeatVec()[i];
+            double min = entryChild(0).getFeatVec()[i];
+            for(int j=1;j<childrenSize();j++){
+                if(entryChild(j).getFeatVec()[i]< min){
+                    min = entryChild(j).getFeatVec()[i];
+                }else if(entryChild(j).getFeatVec()[i] > min)
+
+            }
+        }
+        */
+
+        Utils u = new Utils();
+        List<Rectangle> rects = new ArrayList<>();
+        for(int i=0;i<childrenSize();i++){
+            rects.add(child(i).getRectangle());
+        }
+        rectangle = u.mbrRect(rects);
+    }
+
+    public void deleteChild(Entry e){
+        return;
+    }
+
+    public void deleteChild(TreeNode tn){
+        children.remove(tn);
+    }
 }

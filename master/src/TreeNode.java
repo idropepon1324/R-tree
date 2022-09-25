@@ -12,5 +12,6 @@ public interface TreeNode extends HasGeometry{
     public TreeNode getParent();
     public Context context();
     //public void fixRectangle();
-
+    public void deleteChild(Entry e);
+    public void deleteChild(TreeNode e);
 }
