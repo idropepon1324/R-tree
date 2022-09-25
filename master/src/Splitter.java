@@ -247,7 +247,7 @@ public class Splitter {
         }
 
         // Find the axis with the Min Sum and return that axis
-        return minPosition(S);
+        return Utils.minPosition(S);
     }
 
     private int chooseSplitAxesPoint(List<Entry> objects, Context context){
@@ -274,7 +274,7 @@ public class Splitter {
         }
 
         // Find the axis with the Min Sum and return that axis
-        return minPosition(S);
+        return Utils.minPosition(S);
     }
 
     private List<List<Rectangle>> chooseSplitIndexRect(int axis, List<Rectangle> objects, Context context){
@@ -389,19 +389,6 @@ public class Splitter {
         }
 
         return listPair;
-    }
-
-    private int minPosition(double[] S){
-        int dim = 0;
-        double min = S[0];
-        for (int i=1; i<S.length; i++){
-            if (S[i] < min){
-                min = S[i];
-                dim = i;
-            }
-        }
-
-        return dim;
     }
 
     private List<Rectangle> sortRectanglesLower (List<Rectangle> objects, int axis){

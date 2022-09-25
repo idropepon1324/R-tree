@@ -174,5 +174,8 @@ public final class Rectangle implements Geometry, HasGeometry{
         return true;
     }
 
+    public Rectangle getRectangle(){
+        return this;
+    }
     //boolean isDoublePrecision();
 }

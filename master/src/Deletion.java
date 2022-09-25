@@ -99,7 +99,7 @@ public class Deletion {
 
     //diorthoni ta rectangles anadromika pros ta piso epipeda
     private void fixRects(TreeNode tn,TreeNode root){
-        tn.fixRectangle();
+        tn.fixMbr();                                    // Changed from fixRectangle() to fixMbr()... same function, diff names
         if(tn.getRectangle().isEqualTo(root.getRectangle())){
             return;
         }

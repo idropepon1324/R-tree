@@ -1,12 +1,10 @@
-import com.sun.source.tree.Tree;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
  * This class contains useful methods.
- * Methods: mbrRect(), mbrPoints().
+ * Methods: mbr(), mbrRect(), mbrPoints().
  */
 public class Utils {
 
@@ -48,11 +46,29 @@ public class Utils {
         Rectangle rnew = mbrRect(rectangles);
         //Rectangle rnew2 = mbrPoints(points);
 
-        //rnew2.print();
+        List<Entry> entries = new ArrayList<>();
+        entries.add(new Entry(tmp2.clone(),1,2));
+        Rectangle rnew2 = mbrPoints(entries);
+        rnew2.print();
     }
 */
-    public Utils(){
+    private Utils(){
         // Prevent initializations
+    }
+
+    /**
+     * This function takes Treenodes and returns the mbr that
+     * their children create.
+     * @param node a TreeNode
+     * @param <T> NotLeafNode or LeafNode
+     * @return Minimum bounding rectangle
+     */
+    public static <T extends TreeNode> Rectangle mbr(T node){
+        List<Rectangle> rectangles = new ArrayList<>();
+        for (int i=0; i<node.childrenSize(); i++){
+            rectangles.add(node.child(i).getRectangle());
+        }
+        return mbrRect(rectangles);
     }
 
 
@@ -128,5 +144,24 @@ public class Utils {
         mbr = new Rectangle(vec1, vec2);
 
         return mbr;
+    }
+
+    /**
+     * Return the Position of the list in which the double[] list
+     * has its minimum element.
+     * @param S a double[]
+     * @return the Position of the minimum.
+     */
+    public static int minPosition(double[] S){
+        int dim = 0;
+        double min = S[0];
+        for (int i=1; i<S.length; i++){
+            if (S[i] < min){
+                min = S[i];
+                dim = i;
+            }
+        }
+
+        return dim;
     }
 }

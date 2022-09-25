@@ -1,5 +1,3 @@
-import jdk.jshell.execution.Util;
-
 import java.util.List;
 
 public class LeafNode implements TreeNode {
@@ -48,25 +46,25 @@ public class LeafNode implements TreeNode {
         return null;
     }
 
+    public <T extends HasGeometry> void add(T entry){
+
+        if (entry instanceof Entry){
+            if (entries().size() < context.maxChildren()){
+                entries.add((Entry)entry);
+            }
+        }
+
+    }
+
+    public void fixMbr(){
+        rectangle = Utils.mbr(this);
+    }
+
     public TreeNode getParent(){
         return parent;
     }
 
-    public void fixRectangle(){
-        /*
-        for(int i=0;i<rectangle.getVector1().length;i++){
-            double max = entryChild(0).getFeatVec()[i];
-            double min = entryChild(0).getFeatVec()[i];
-            for(int j=1;j<childrenSize();j++){
-                if(entryChild(j).getFeatVec()[i]< min){
-                    min = entryChild(j).getFeatVec()[i];
-                }else if(entryChild(j).getFeatVec()[i] > min)
-
-            }
-        }
-        */
-
-        Utils u = new Utils();
-        rectangle = u.mbrPoints(entries);
-    }
+//    public void fixRectangle(){
+//        rectangle = Utils.mbrPoints(entries);
+//    }
 }
