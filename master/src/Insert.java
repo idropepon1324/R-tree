@@ -62,13 +62,9 @@ public class Insert {
 
     public <T extends HasGeometry> TreeNode chooseSubtree(int level, T newData){
         int depth = 0;
-        Optional<? extends TreeNode> root = rtree.getRoot();
+        TreeNode root = rtree.getRoot();
         TreeNode node;
-        if (root.isPresent()){
-            node = root.get();
-        } else {
-            return null;
-        }
+        node = root;
 
         while (true) {
             if (node instanceof LeafNode) {

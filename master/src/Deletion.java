@@ -8,7 +8,6 @@ public class Deletion {
     }
 
 
-
     private List<TreeNode> listOfTn;
     public boolean deleteEntry(RTree r, TreeNode root,Entry e){
         TreeNode tn = returnTnOfSearchedEntry(root,e);
@@ -36,7 +35,7 @@ public class Deletion {
             if(tn.childrenSize()-1<tn.context().minChildren()){
                 p.deleteChild(tn);
                 listOfTn.add(tn);
-                deleteEntryHelper(root, tn);
+                deleteEntryHelper(r, root, tn);
             }else {
                 fixRects(tn,root);
             }

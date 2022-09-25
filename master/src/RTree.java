@@ -4,8 +4,8 @@ import java.util.Optional;
 /**
  * This is the R* tree representative class.
  */
-public final class RTree implements Serializable {
-    private Optional<? extends TreeNode> root;  // Root is in the family of Tree Nodes
+public final  class RTree <T extends TreeNode> implements Serializable {
+    private TreeNode root;  // Root is in the family of Tree Nodes
     private Context context;
 
     public RTree(){
@@ -13,16 +13,16 @@ public final class RTree implements Serializable {
         context = new Context();
     }
 
-    public RTree(Optional<? extends TreeNode> root, Context context){
+    public RTree(TreeNode root, Context context){
         this.root = root;
         this.context = context;
     }
 
-    public Optional<? extends TreeNode> getRoot(){
+    public TreeNode getRoot(){
         return root;
     }
 
-    public void setRoot(Optional<? extends TreeNode> newRoot){
+    public <T extends TreeNode> void setRoot(T newRoot){
         root = newRoot;
     }
 
@@ -45,8 +45,9 @@ public final class RTree implements Serializable {
         return calculateDepth(root);
     }
 
-    private static int calculateDepth(Optional<? extends TreeNode> root) {
-        return root.map(node -> calculateDepth(node, 0)).orElse(0);
+    private static int calculateDepth(TreeNode root) {  // Fix this later //TODO
+        //return root.map(node -> calculateDepth(node, 0)).orElse(0);
+        return 0;
     }
 
     private static int calculateDepth(TreeNode node, int depth) {
