@@ -162,5 +162,17 @@ public final class Rectangle implements Geometry, HasGeometry{
         System.out.println();
     }
 
+    public boolean isEqualTo(Rectangle r){
+        for(int i=0;i<vector1.length;i++){
+            if(vector1[i] != r.vector1[i]){
+                return false;
+            }
+            if (vector2[i] != r.vector2[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
     //boolean isDoublePrecision();
 }

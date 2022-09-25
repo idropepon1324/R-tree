@@ -25,4 +25,12 @@ public class Entry implements HasGeometry {
 
     public double[] getPoint() { return featVec; }
 
+    public boolean isEqualTo(Entry e){
+        for(int i=0;i<featVec.length;i++){
+            if (featVec[i] != e.featVec[i]){
+                return false;
+            }
+        }
+        return true;
+    }
 }

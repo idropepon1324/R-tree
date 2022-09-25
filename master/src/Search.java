@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -13,7 +15,8 @@ public class Search {
     private List<Entry> finalEntries;
     private Queue<TreeNode> tnQueue;
     public List<Entry> searchArea(TreeNode root, Rectangle rect){
-
+        finalEntries = new ArrayList<>();
+        tnQueue = new LinkedList<>();
         tQueue.add(root);
         searchAreaHelper(rect);
         return finalEntries;
@@ -85,7 +88,7 @@ public class Search {
     private boolean exists;
     public boolean searchEntry(TreeNode root, Entry e){
         exists = false;
-
+        tnQueue = new LinkedList<>();
         tQueue.add(root);
         searchEntryHelper(e);
         if(exists==true) {

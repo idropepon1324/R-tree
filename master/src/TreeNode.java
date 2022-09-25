@@ -8,5 +8,8 @@ public interface TreeNode extends HasGeometry{
     public int childrenSize();
     public TreeNode child(int i);
     public Entry entryChild(int i);
+    public TreeNode getParent();
+    public Context context();
+    public void fixRectangle();
 
 }

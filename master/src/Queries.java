@@ -30,6 +30,7 @@ public class Queries {
 
     private List<Entry> skyLineBBS(TreeNode root){
 
+        minHeap = new PriorityQueue<>();
         skyLineList = new ArrayList<>();
         for(int i=0;i<root.childrenSize();i++){
             minHeap.add(root.child(i));

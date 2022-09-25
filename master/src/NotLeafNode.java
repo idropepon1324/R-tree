@@ -1,3 +1,5 @@
+import javax.print.DocFlavor;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ public class NotLeafNode implements TreeNode {
     private List<? extends TreeNode> children;
     private Rectangle rectangle;
     private Context context;
+    private TreeNode parent;
     private int index;
 
     public NotLeafNode(List<? extends TreeNode> children, Rectangle rectangle, Context context){
@@ -51,5 +54,29 @@ public class NotLeafNode implements TreeNode {
 
     public List<TreeNode> children(){
         return (List<TreeNode>) children;
+    }
+
+    public TreeNode getParent(){ return parent; }
+
+    public void fixRectangle(){
+        /*
+        for(int i=0;i<rectangle.getVector1().length;i++){
+            double max = entryChild(0).getFeatVec()[i];
+            double min = entryChild(0).getFeatVec()[i];
+            for(int j=1;j<childrenSize();j++){
+                if(entryChild(j).getFeatVec()[i]< min){
+                    min = entryChild(j).getFeatVec()[i];
+                }else if(entryChild(j).getFeatVec()[i] > min)
+
+            }
+        }
+        */
+
+        Utils u = new Utils();
+        List<Rectangle> rects = new ArrayList<>();
+        for(int i=0;i<childrenSize();i++){
+            rects.add(child(i).getRectangle());
+        }
+        rectangle = u.mbrRect(rects);
     }
 }

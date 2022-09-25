@@ -14,6 +14,7 @@ public class Utils {
      * Testing main for the Util functions.
      * mbrRect() and mbrPoints() work successfully. Maybe use try() to catch exceptions in the future
      */
+    /*
     public static void main(String[] args) {
         List<Rectangle> rectangles = new ArrayList<>();
         List<double[]> points = new ArrayList<>();
@@ -49,8 +50,8 @@ public class Utils {
 
         //rnew2.print();
     }
-
-    private Utils(){
+*/
+    public Utils(){
         // Prevent initializations
     }
 
