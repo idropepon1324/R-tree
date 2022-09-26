@@ -21,15 +21,20 @@ public class NotLeafNode implements TreeNode {
         this.context = context;
     }
 
+    public NotLeafNode(List<? extends TreeNode> children, Context context){
+        this.children = children;
+        this.context = context;
+        fixMbr();
+    }
+
     public <T extends HasGeometry> void add(T entry) {
         List<? extends TreeNode> tmp = NonLeafFunctions.add(entry, this);
         if (tmp != null){
             children = tmp;
+        } else {
+            System.out.println("Children wasn't added in the NonLeafFunction.add().");
         }
     }
-//    public NodeAndEntries delete(Entry entry, boolean all) {
-//        return NonLeafFunctions.delete(entry, all, this);
-//    }
 
     public int childrenSize() {
         return children.size();

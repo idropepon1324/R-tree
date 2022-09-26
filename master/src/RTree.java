@@ -1,16 +1,16 @@
 import java.io.Serializable;
-import java.util.Optional;
 
 /**
  * This is the R* tree representative class.
  */
-public final  class RTree <T extends TreeNode> implements Serializable {
+public final class RTree implements Serializable {
     private TreeNode root;  // Root is in the family of Tree Nodes
     private Context context;
 
     public RTree(){
         //
         context = new Context();
+        root = null;
     }
 
     public RTree(TreeNode root, Context context){
@@ -54,7 +54,7 @@ public final  class RTree <T extends TreeNode> implements Serializable {
         if (node instanceof LeafNode) {
             return depth + 1;
         } else {
-            return calculateDepth(((NotLeafNode) node).child(0), depth + 1);
+            return calculateDepth(( node).child(0), depth + 1);
         }
     }
 

@@ -164,4 +164,33 @@ public class Utils {
 
         return dim;
     }
+
+    /**
+     * Return the distance between the centers of two Rectangles.
+     * @param rect1 Rectangle one
+     * @param rect2 Rectangle two
+     * @return (double) distance
+     */
+    public static double distanceRect(Rectangle rect1, Rectangle rect2){
+        double sum = 0;
+        double[] tmp1 = rect1.getVector1();
+        double[] tmp2 = rect1.getVector2();
+        double[] center1 = new double[tmp1.length];
+        double[] center2 = new double[tmp1.length];
+        for (int i=0; i<center1.length; i++){
+            center1[i] = (tmp1[i] + tmp2[i]) / 2;
+        }
+
+        tmp1 = rect2.getVector1();
+        tmp2 = rect2.getVector2();
+        for (int i=0; i<center2.length; i++){
+            center2[i] = (tmp1[i] + tmp2[i]) / 2;
+        }
+
+        for (int i=0; i<center1.length; i++){
+            sum += Math.pow(center1[i] - center2[i], 2);
+        }
+
+        return Math.sqrt(sum);
+    }
 }

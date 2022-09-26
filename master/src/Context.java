@@ -5,6 +5,7 @@ public final class Context{
 
     private final int maxChildren;
     private final int minChildren;
+    private final int reInsertRate;
     private final Splitter splitter;
 //    private final Selector selector;
 //    ///**
@@ -41,9 +42,11 @@ public final class Context{
 
     // Default values are m=2 and M=5
     // Research has shown that m=40% gives the best results
+    // reInsertRate(p) shoes best result at 30%.
     public Context(){
         maxChildren = 5;
         minChildren = 2;
+        reInsertRate = 2;
         splitter = new Splitter();
     }
 
@@ -57,6 +60,10 @@ public final class Context{
 
     public Splitter splitter() {
         return splitter;
+    }
+
+    public int getReInsertRate(){
+        return reInsertRate;
     }
 
 //    public Selector selector() {

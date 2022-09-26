@@ -13,14 +13,6 @@ public class LeafNode implements TreeNode {
         this.rectangle = rectangle;
         this.context = context;
     }
-    
-//    public List<TreeNode> add(Entry entry) {
-//        return NonLeafHelper.add(entry, this);
-//    }
-//
-//    public NodeAndEntries<T, S> delete(Entry<? extends T, ? extends S> entry, boolean all) {
-//        return LeafHelper.delete(entry, all, this);
-//    }
 
     public int childrenSize(){
         return entries.size();
@@ -64,15 +56,12 @@ public class LeafNode implements TreeNode {
         return parent;
     }
 
-//    public void fixRectangle(){
-//        rectangle = Utils.mbrPoints(entries);
-//    }
 
     public void deleteChild(Entry e){
         entries.remove(e);
     }
 
     public void deleteChild(TreeNode tn){
-        return;
+        //return;
     }
 }

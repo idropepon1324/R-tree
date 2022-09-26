@@ -1,10 +1,15 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+/**
+ * This Class is used to Insert data to an R* tree.
+ * The method used in this is the insertData(RTree newRtree, int leafLevel, Entry newData)
+ * which takes as a parameter the r* tree, the leaf level and the new data Entry.
+ */
 public class Insert {
     RTree rtree;
+    boolean firstCall;
+    int currentLevel;
+
     /*
      * Inserting 2 types of data Entries/Points and TreeNodes/Rectangles.
      *
@@ -17,49 +22,111 @@ public class Insert {
      * of overflowTreatment.
      */
 
+    /*
+     * ReverseOrder in sort works perfectly.
+     */
     public static void main(String[] args) {
-        List<LeafNode> leafNodes = new ArrayList<>();
-        double[] vec = new double[2];
-        vec[0] = 1.1;
-        vec[1] = 2.2;
-        TreeNode treeNode = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
-        NotLeafNode node = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
-
-        System.out.println(treeNode.getClass());
+//        List<LeafNode> leafNodes = new ArrayList<>();
+//        double[] vec = new double[2];
+//        vec[0] = 1.1;
+//        vec[1] = 2.2;
+//        TreeNode treeNode = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
+//        NotLeafNode node = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
+//
+//        System.out.println(treeNode.getClass());
+//
+//        HashMap<Double, String> k = new HashMap<>();
+//        k.put(3.3, "Hi");
+//        k.put(7.7,"yes");
+//        k.put(5.5,"to");
+//        TreeMap<Double, String> sorted = new TreeMap<>(Collections.reverseOrder());
+//        sorted.putAll(k);
+//        System.out.println(k.values());
     }
 
     public Insert(){
         //
+        rtree = new RTree();
+        firstCall = true;
     }
 
     public Insert(RTree rtree){
         this.rtree = rtree;
+        firstCall = true;
     }
 
+    /**
+     * This inserts the new Data to the given R* tree.
+     * @param newRtree an Rtree
+     * @param leafLevel the leaf level
+     * @param newData the new Entry data
+     */
     public void insertData(RTree newRtree, int leafLevel, Entry newData){
+        currentLevel = leafLevel;
         rtree = newRtree;
         insert(leafLevel, newData);
     }
 
+    /**
+     * This private method checks and follow the algorithm of how to insert new Entries.
+     * All the main logic is in this method.
+     * @param level the level we wish to insert the entry
+     * @param newData the entry we wish to insert
+     * @param <T> the class of the entry (TreeNode/Entry)
+     */
+    @SuppressWarnings("unchecked") // Casting of <? extends TreeNode> to <TreeNode>: Obvious
     private <T extends HasGeometry> void insert(int level, T newData){
         TreeNode node = chooseSubtree(level, newData);
 
-        if (node.childrenSize() < rtree.getContext().maxChildren()){
+        if (node.childrenSize() < rtree.getContext().maxChildren()){    // <M
             node.add(newData);
+        } else if (node.childrenSize() == rtree.getContext().maxChildren()){ // ==M
+            currentLevel = level;
+            List<TreeNode> listPair =(List<TreeNode>) overflowTreatment(level, node, newData);
+
+            // Split occurred, Go up a level to fix the problem
+            while (listPair != null && currentLevel != 1 && currentLevel != 0){ // NOT THE ROOT
+                currentLevel = level - 1;
+                TreeNode parent = node.getParent();
+                parent.deleteChild(node);
+
+                // All splits entries fit in the tree node.
+                if (parent.childrenSize() + 2 <= parent.context().maxChildren()){
+                    parent.add(listPair.get(0));
+                    parent.add(listPair.get(1));
+                    node = parent; // In order to fix the mbr later
+                    listPair = null; // Break;
+                } else { // M+1 entries
+                    parent.add(listPair.get(0));
+                    parent.fixMbr();
+                    node = parent;
+                    listPair =(List<TreeNode>)  overflowTreatment(currentLevel, node, listPair.get(1));
+                }
+            }
+
+            // Special Case: when the root has been split
+            if (listPair != null && currentLevel == 0) {
+                TreeNode newRoot = new NotLeafNode(listPair, rtree.getContext());
+                rtree.setRoot(newRoot);
+            }
         }
 
-        if (newData instanceof Entry){
-            Entry data = (Entry) newData;
-            chooseSubtree(level, newData);
-
-        } else if (newData instanceof LeafNode){
-
-        } else if (newData instanceof NotLeafNode){
-
-        }
         // Fix all the rectangles mbr of the path
+        while (node.getParent() != null){
+            node.fixMbr();
+            node = node.getParent();
+        }
+        node.fixMbr();  // Root fix
     }
 
+    /**
+     * This private method chooses the most appropriate node in the tree, at the
+     * level that has being asked, to accommodate the new Entry.
+     * @param level the level we wish to insert the entry
+     * @param newData the entry to be inserted
+     * @param <T> the class of the entry(TreeNode/Entry)
+     * @return a TreeNode (NotLeafNode/LeafNode)
+     */
     public <T extends HasGeometry> TreeNode chooseSubtree(int level, T newData){
         int depth = 0;
         TreeNode root = rtree.getRoot();
@@ -111,11 +178,94 @@ public class Insert {
         }
     }
 
-    private void overflowTreatment(){
+    /**
+     * Returns null, if it Reinserts(dynamically), or else return two
+     * treeNodes that are created from the split of the node with the new data.
+     *
+     * @param level The level of the node
+     * @param node the node to be reInserted or split
+     * @param newData the new data to be registered
+     * @param <T> a TreeNode or an Entry
+     * @return a ListPair of TreeNodes or null for reInsert
+     */
+    private <T extends HasGeometry> List<? extends TreeNode> overflowTreatment(int level, TreeNode node, T newData){
+
+        if (level != 0 && isFirstCall(level)){
+            firstCall = false;      // So if the the OverflowTreatment call itself in the same level, split
+            // ReInsert()
+            reInsert(level, node, newData);
+            firstCall = true; // Reset its function
+        } else {
+            // Split()
+            if(node instanceof NotLeafNode){
+                TreeNode addUp = (TreeNode) newData;
+                // Return the listPair of NotLeafNodes
+                return rtree.getContext().splitter().split((NotLeafNode)node, addUp, node.context());
+            } else if (node instanceof LeafNode){
+                Entry addUp = (Entry) newData;
+                // Return the listPair of LeafNodes
+                return rtree.getContext().splitter().split((LeafNode) node, addUp, node.context());
+            }
+        }
+        // Reinsert occurred
+        return null;
 
     }
 
-    private void reInsert(){
+    /**
+     * This method re-inserts the M+1 entries accordingly.
+     * The algorithm chooses the "p" furthest distance Entries to be
+     * re-Inserted and the M+1-p stay in the node with the new mbr.
+     * M entries from node + 1 from the new Data.
+     * @param level the level to be reInserted
+     * @param node the node with the entries
+     * @param newData the new entry
+     * @param <T> the class of the Entries
+     */
+    private <T extends HasGeometry> void reInsert(int level, TreeNode node, T newData){
+        List<T> p = new ArrayList<>();
 
+        List<T> sorted = sortNodeReInsert(node, newData);
+        node.add(newData);
+
+        // Remove the first "p" objects, adjust the mbr and insert them again
+        for (int i=0; i<node.context().getReInsertRate(); i++){
+            p.add(sorted.get(i));
+
+            if (node instanceof LeafNode){
+                node.deleteChild((Entry)sorted.get(i));
+            } else if (node instanceof NotLeafNode){
+                node.deleteChild((TreeNode)sorted.get(i));
+            }
+        }
+        node.fixMbr();
+
+        // Insert the "p" entries again
+        for (T t: p){
+            insert(level, t);
+        }
+    }
+
+    // Checks if it is the first call of the reinsert for that level.
+    private boolean isFirstCall(int level){
+        return currentLevel != level || firstCall;
+    }
+
+    // Sorts the Entries in Descendant order of their distances of the main Rect and returns the M+1 in a list.
+    @SuppressWarnings("unchecked") // T casting to a node.child(): It is of T Class
+    private <T extends HasGeometry> List<T> sortNodeReInsert(TreeNode node, T newData){
+        int kids = node.childrenSize();
+        Rectangle mainRect = node.getRectangle();
+        HashMap<Double, T> map = new HashMap<>();
+        double diff;
+
+        for (int i=0; i<kids; i++){
+            diff = Utils.distanceRect(mainRect, node.child(i).getRectangle());
+            map.put(diff, (T)node.child(i));
+        }
+        map.put(Utils.distanceRect(mainRect, newData.getRectangle()), newData);
+        TreeMap<Double, T> sorted = new TreeMap<>(Collections.reverseOrder());
+        sorted.putAll(map);
+        return new ArrayList<>(sorted.values());
     }
 }

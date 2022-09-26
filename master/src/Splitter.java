@@ -28,6 +28,7 @@ public class Splitter {
         //
     }
 
+    @SuppressWarnings("unchecked") // Cast, <? extends TreeNode> to <LeafNode>/<NotLeafNode> : If conditions are in place
     public static void main(String[] args) {
         //TODO Finishing this part and the testing the split to see if it works in future
         //TODO Beginning of the report and the tidying up the warnings and the comments in the finished parts of the algorithm.
@@ -75,6 +76,17 @@ public class Splitter {
         double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
 
     }
+
+
+    /**
+     * This method splits the node entries and addUp (TreeNodes) to two NotLeafNodes
+     * @param node the Non Leaf node with the entries
+     * @param addUp the extra entry
+     * @param context the context of the node
+     * @param <G> the class of the Entries (LeafNode/NotLeafNode)
+     * @return a List of two NotLeafNodes
+     */
+    @SuppressWarnings("unchecked") // Cast, <? extends TreeNode> to <LeafNode>/<NotLeafNode> : If conditions are in place
     public <G extends TreeNode> List<NotLeafNode> split(NotLeafNode node, G addUp, Context context){
         int axis;
         List<NotLeafNode> splitNodes = new ArrayList<>();       // 2 in number
@@ -146,6 +158,13 @@ public class Splitter {
         return splitNodes;
     }
 
+    /**
+     * This method splits the node entries and addUp (Entries) to two LeafNodes
+     * @param node the Leaf node with the entries
+     * @param addUp the extra entry
+     * @param context the context of the node
+     * @return a List of two LeafNodes
+     */
     public List<LeafNode> split(LeafNode node, Entry addUp, Context context){
         int axis;
         List<LeafNode> splitNodes = new ArrayList<>();       // 2 in number
