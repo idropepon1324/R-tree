@@ -11,8 +11,9 @@ public class Utils {
     /*
      * Testing main for the Util functions.
      * mbrRect() and mbrPoints() work successfully. Maybe use try() to catch exceptions in the future
+     * mbr works but had/have small problems with nulls.
      */
-    /*
+
     public static void main(String[] args) {
         List<Rectangle> rectangles = new ArrayList<>();
         List<double[]> points = new ArrayList<>();
@@ -46,12 +47,20 @@ public class Utils {
         Rectangle rnew = mbrRect(rectangles);
         //Rectangle rnew2 = mbrPoints(points);
 
+        System.out.println("After");
         List<Entry> entries = new ArrayList<>();
         entries.add(new Entry(tmp2.clone(),1,2));
-        Rectangle rnew2 = mbrPoints(entries);
-        rnew2.print();
+        //entries.get(0).getRectangle().print();
+        TreeNode root = new LeafNode(entries,new Context());
+        root.getRectangle().print();
+        System.out.println("ok");
+
+        //root.fixMbr();
+        //root.getRectangle().print();
+
+
     }
-*/
+
     private Utils(){
         // Prevent initializations
     }
@@ -64,11 +73,24 @@ public class Utils {
      * @return Minimum bounding rectangle
      */
     public static <T extends TreeNode> Rectangle mbr(T node){
-        List<Rectangle> rectangles = new ArrayList<>();
-        for (int i=0; i<node.childrenSize(); i++){
-            rectangles.add(node.child(i).getRectangle());
+        try{
+            List<Rectangle> rectangles = new ArrayList<>();
+            for (int i=0; i<node.childrenSize(); i++){
+                if (node instanceof LeafNode){
+                    rectangles.add(node.entryChild(i).getRectangle());
+                } else if (node instanceof NotLeafNode){
+                    rectangles.add(node.child(i).getRectangle());
+                }
+
+            }
+            return mbrRect(rectangles);
+        } catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Location: Utils.mbr()");
         }
-        return mbrRect(rectangles);
+        return new Rectangle();
+
+
     }
 
 

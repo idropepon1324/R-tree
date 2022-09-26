@@ -78,7 +78,12 @@ public class Insert {
     private <T extends HasGeometry> void insert(int level, T newData){
         TreeNode node = chooseSubtree(level, newData);
 
-        if (node.childrenSize() < rtree.getContext().maxChildren()){    // <M
+        if (node == null) { // First ever root
+            List<Entry> entry = new ArrayList<>();
+            entry.add((Entry)newData);
+            rtree.setRoot(new LeafNode(entry, rtree.getContext()));
+            node = rtree.getRoot();
+        } else if (node.childrenSize() < rtree.getContext().maxChildren()){    // <M
             node.add(newData);
         } else if (node.childrenSize() == rtree.getContext().maxChildren()){ // ==M
             currentLevel = level;
@@ -134,7 +139,9 @@ public class Insert {
         node = root;
 
         while (true) {
-            if (node instanceof LeafNode) {
+            if (node == null){ // first root
+                return null;
+            } else if (node instanceof LeafNode) {
                 return node;
             } else if (level == depth) {
                 return node;
@@ -149,9 +156,11 @@ public class Insert {
                  * accommodate the new Data entry/Rectangle.
                  * In conflicts of equality we get the smaller rectangle.
                  */
-                for (int i = 0; i < childrenSize; i++) {
+                for (int i = 0; i < childrenSize; i++) { // No LeafNodes in here so node.child() works perfectly
                     rectangles.add(node.child(i).getRectangle());
                     map.put(node.child(i).getRectangle(), node.child(i));
+
+
                     List<Rectangle> tmp = new ArrayList<>();
                     tmp.add(rectangles.get(i));
                     tmp.add(newData.getRectangle());
@@ -260,8 +269,13 @@ public class Insert {
         double diff;
 
         for (int i=0; i<kids; i++){
-            diff = Utils.distanceRect(mainRect, node.child(i).getRectangle());
-            map.put(diff, (T)node.child(i));
+            if(node instanceof LeafNode){
+                diff = Utils.distanceRect(mainRect, node.entryChild(i).getRectangle());
+                map.put(diff, (T)node.entryChild(i));
+            } else if (node instanceof NotLeafNode) {
+                diff = Utils.distanceRect(mainRect, node.child(i).getRectangle());
+                map.put(diff, (T)node.child(i));
+            }
         }
         map.put(Utils.distanceRect(mainRect, newData.getRectangle()), newData);
         TreeMap<Double, T> sorted = new TreeMap<>(Collections.reverseOrder());

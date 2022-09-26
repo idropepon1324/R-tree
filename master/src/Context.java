@@ -50,6 +50,13 @@ public final class Context{
         splitter = new Splitter();
     }
 
+    public Context(int minChildren, int maxChildren, int reInsertRate){
+        this.minChildren = minChildren;
+        this.maxChildren = maxChildren;
+        this.reInsertRate = reInsertRate;
+        splitter = new Splitter();
+    }
+
     public int maxChildren() {
         return maxChildren;
     }

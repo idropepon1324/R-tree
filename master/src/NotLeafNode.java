@@ -15,15 +15,31 @@ public class NotLeafNode implements TreeNode {
     private TreeNode parent;
     private int index;
 
+    public NotLeafNode(List<? extends TreeNode> children, Rectangle rectangle, Context context, TreeNode parent){
+        this.children = children;
+        this.rectangle = rectangle;
+        this.context = context;
+        this.parent = parent;
+    }
+
     public NotLeafNode(List<? extends TreeNode> children, Rectangle rectangle, Context context){
         this.children = children;
         this.rectangle = rectangle;
         this.context = context;
+        this.parent = null;
+    }
+
+    public NotLeafNode(List<? extends TreeNode> children, Context context, TreeNode parent){
+        this.children = children;
+        this.context = context;
+        this. parent = parent;
+        fixMbr();
     }
 
     public NotLeafNode(List<? extends TreeNode> children, Context context){
         this.children = children;
         this.context = context;
+        this. parent = null;
         fixMbr();
     }
 
@@ -56,13 +72,17 @@ public class NotLeafNode implements TreeNode {
         return rectangle;
     }
 
-    public Entry entryChild(int i){return null;};
+    public Entry entryChild(int i){return null;} // Out of use
 
     public List<TreeNode> children(){
         return (List<TreeNode>) children;
     }
 
     public TreeNode getParent(){ return parent; }
+
+    public void setParent(TreeNode parent) {
+        this.parent = parent;
+    }
 
     public void fixMbr(){
         rectangle = Utils.mbr(this);

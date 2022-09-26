@@ -8,11 +8,36 @@ public class LeafNode implements TreeNode {
     private TreeNode parent;
     private int index;
 
+    public LeafNode (List<Entry> entries, Rectangle rectangle, Context context, TreeNode parent){
+        this.entries = entries;
+        this.rectangle = rectangle;
+        this.context = context;
+        this.parent = parent;
+    }
+
+
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context){
         this.entries = entries;
         this.rectangle = rectangle;
         this.context = context;
+        this.parent = null;
     }
+
+    public LeafNode(List<Entry> entries, Context context, TreeNode parent){
+        this.entries = entries;
+        this.context = context;
+        this.parent = parent;
+        fixMbr();
+    }
+
+    public LeafNode(List<Entry> entries, Context context){
+        this.entries = entries;
+        this.context = context;
+        this.parent = null;
+        fixMbr();
+    }
+
+
 
     public int childrenSize(){
         return entries.size();
@@ -54,6 +79,10 @@ public class LeafNode implements TreeNode {
 
     public TreeNode getParent(){
         return parent;
+    }
+
+    public void setParent(TreeNode parent){
+        this.parent = parent;
     }
 
 
