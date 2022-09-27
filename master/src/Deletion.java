@@ -86,7 +86,7 @@ public class Deletion {
         }
     }
 
-
+    
     private void getEntriesFromTreeNodeThatIsNotLeaf(TreeNode tn){
 
         if(tn instanceof NotLeafNode){
