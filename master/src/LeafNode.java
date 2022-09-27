@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeafNode implements TreeNode {
@@ -6,7 +7,6 @@ public class LeafNode implements TreeNode {
     private Rectangle rectangle;
     private Context context;
     private TreeNode parent;
-    private int index;
 
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context, TreeNode parent){
         this.entries = entries;
@@ -66,11 +66,17 @@ public class LeafNode implements TreeNode {
     public <T extends HasGeometry> void add(T entry){
 
         if (entry instanceof Entry){
-            if (entries().size() < context.maxChildren()){
-                entries.add((Entry)entry);
-            }
-        }
+            // Changing the add of the entry to this 3 line code and fixing for some reason the ConcurrentModificationException
+            // After 4 hour the problem was solved
+            List<Entry> tmp = new ArrayList<>(entries);
+            tmp.add((Entry)entry);
+            entries = new ArrayList<>(tmp);
+            //entries.add((Entry)entry);            // This was the big problem
 
+        } else {
+            System.out.println("Error occurred during saving a not entry object in a leaf");
+            System.out.println("_____________________________________________________________");
+        }
     }
 
     public void fixMbr(){

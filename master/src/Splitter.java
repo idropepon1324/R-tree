@@ -27,64 +27,60 @@ public class Splitter {
     public Splitter(){
         //
     }
-
-    @SuppressWarnings("unchecked") // Cast, <? extends TreeNode> to <LeafNode>/<NotLeafNode> : If conditions are in place
-    public static void main(String[] args) {
-        //TODO Finishing this part and the testing the split to see if it works in future
-        //TODO Beginning of the report and the tidying up the warnings and the comments in the finished parts of the algorithm.
-
-        double[] v = new double[2];
-        double[] v2 = new double[2];
-        v[0] = 1.2;
-        v[1] = 2.3;
-        v2[0] = 3.3;
-        v2[1] = 5.5;
-        List<Entry> entries = new ArrayList<>();
-        Rectangle rect = new Rectangle(v.clone(), v2.clone());
-        entries.add(new Entry(v.clone(), 1, 1));
-        entries.add(new Entry(v2.clone(), 1, 2));
-        List<LeafNode> leafNodes = new ArrayList<>();
-
-        leafNodes.add(new LeafNode(entries, rect,new Context()));
-
-        List<NotLeafNode> notLeafNodes = new ArrayList<>();
-        notLeafNodes.add(new NotLeafNode(leafNodes, rect, new Context()));
-
-        List<LeafNode> list =(List<LeafNode>) notLeafNodes.get(0).entries();
-        System.out.println(list.get(0).getRectangle().getVector1()[0]);
-        NotLeafNode node = new NotLeafNode(notLeafNodes, rect, new Context());
-
-        List<? extends TreeNode> tmpList = node.entries();
-        System.out.println(tmpList.get(0).getClass());
-        List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
-        System.out.println(notlist.get(0).getRectangle().area());
-
-        System.out.println(LeafNode.class.equals(notlist.get(0).getClass()));
-
-        //List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
-
-        double[] S = new double[10];
-        for (double d: S){
-            System.out.println(d);
-        }
-
-        // Testing split... Sometime in the future
-        Random r = new Random();
-        List<Rectangle> rectangles = new ArrayList<>();
-        double rangeMin = -180.0;
-        double rangeMax = 180.0;
-        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
-
-        System.out.println("After==============");
-        List<Integer> integers = new ArrayList<>();
-        integers.add(1);
-        integers.add(2);
-        integers.add(3);
-        System.out.println(integers.subList(0,1));
-
-
-
-    }
+//
+//    @SuppressWarnings("unchecked") // Cast, <? extends TreeNode> to <LeafNode>/<NotLeafNode> : If conditions are in place
+//    public static void main(String[] args) {
+//        //TODO Beginning of the report and the tidying up the warnings and the comments in the finished parts of the algorithm.
+//
+//        double[] v = new double[2];
+//        double[] v2 = new double[2];
+//        v[0] = 1.2;
+//        v[1] = 2.3;
+//        v2[0] = 3.3;
+//        v2[1] = 5.5;
+//        List<Entry> entries = new ArrayList<>();
+//        Rectangle rect = new Rectangle(v.clone(), v2.clone());
+//        entries.add(new Entry(v.clone(), 1, 1));
+//        entries.add(new Entry(v2.clone(), 1, 2));
+//        List<LeafNode> leafNodes = new ArrayList<>();
+//
+//        leafNodes.add(new LeafNode(entries, rect,new Context()));
+//
+//        List<NotLeafNode> notLeafNodes = new ArrayList<>();
+//        notLeafNodes.add(new NotLeafNode(leafNodes, rect, new Context()));
+//
+//        List<LeafNode> list =(List<LeafNode>) notLeafNodes.get(0).entries();
+//        System.out.println(list.get(0).getRectangle().getVector1()[0]);
+//        NotLeafNode node = new NotLeafNode(notLeafNodes, rect, new Context());
+//
+//        List<? extends TreeNode> tmpList = node.entries();
+//        System.out.println(tmpList.get(0).getClass());
+//        List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
+//        System.out.println(notlist.get(0).getRectangle().area());
+//
+//        System.out.println(LeafNode.class.equals(notlist.get(0).getClass()));
+//
+//        //List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
+//
+//        double[] S = new double[10];
+//        for (double d: S){
+//            System.out.println(d);
+//        }
+//
+//        // Testing split... Sometime in the future
+//        Random r = new Random();
+//        List<Rectangle> rectangles = new ArrayList<>();
+//        double rangeMin = -180.0;
+//        double rangeMax = 180.0;
+//        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+//
+//        System.out.println("After==============");
+//        List<Integer> integers = new ArrayList<>();
+//        integers.add(1);
+//        integers.add(2);
+//        integers.add(3);
+//        System.out.println(integers.subList(0,1));
+//    }
 
 
     /**
@@ -164,6 +160,14 @@ public class Splitter {
             System.out.println("Miscalculation in the split of NotLeafNode.");
         }
 
+        // Set the new Parents
+        for (TreeNode treeNode: splitNodes){
+            for(int i=0;i<treeNode.childrenSize();i++){
+                treeNode.child(i).setParent(treeNode);
+            }
+        }
+
+
         return splitNodes;
     }
 
@@ -178,8 +182,6 @@ public class Splitter {
         int axis;
         List<LeafNode> splitNodes = new ArrayList<>();       // 2 in number
 
-        List<Entry> list1 = new ArrayList<>();
-        List<Entry> list2 = new ArrayList<>();
         List<Entry> objects = node.entries();
         objects.add(addUp);
 
@@ -188,8 +190,9 @@ public class Splitter {
         axis = chooseSplitAxesPoint(objects, context);
         List<List<Entry>> listPair = chooseSplitIndexPoint(axis, objects, context);
 
-        splitNodes.add(new LeafNode(list1, Utils.mbrPoints(listPair.get(0)), context));
-        splitNodes.add(new LeafNode(list2, Utils.mbrPoints(listPair.get(1)), context));
+        splitNodes.add(new LeafNode(listPair.get(0), Utils.mbrPoints(listPair.get(0)), context));
+        splitNodes.add(new LeafNode(listPair.get(1), Utils.mbrPoints(listPair.get(1)), context));
+        // No need for parents because they are entries
 
         return splitNodes;
     }

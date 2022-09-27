@@ -25,24 +25,6 @@ public class Insert {
     /*
      * ReverseOrder in sort works perfectly.
      */
-    public static void main(String[] args) {
-//        List<LeafNode> leafNodes = new ArrayList<>();
-//        double[] vec = new double[2];
-//        vec[0] = 1.1;
-//        vec[1] = 2.2;
-//        TreeNode treeNode = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
-//        NotLeafNode node = new NotLeafNode(leafNodes, new Rectangle(vec, vec), new Context());
-//
-//        System.out.println(treeNode.getClass());
-//
-//        HashMap<Double, String> k = new HashMap<>();
-//        k.put(3.3, "Hi");
-//        k.put(7.7,"yes");
-//        k.put(5.5,"to");
-//        TreeMap<Double, String> sorted = new TreeMap<>(Collections.reverseOrder());
-//        sorted.putAll(k);
-//        System.out.println(k.values());
-    }
 
     public Insert(){
         //
@@ -84,24 +66,37 @@ public class Insert {
             rtree.setRoot(new LeafNode(entry, rtree.getContext()));
             node = rtree.getRoot();
         } else if (node.childrenSize() < rtree.getContext().maxChildren()){    // <M
-            node.add(newData);
+            if(node instanceof NotLeafNode){
+                node.add(newData);
+            } else if (node instanceof LeafNode){
+                node.add((Entry) newData);
+            }
+            //node.add(newData);
+
+            if (newData instanceof TreeNode){
+                ((TreeNode) newData).setParent(node.getParent());
+            }
+
         } else if (node.childrenSize() == rtree.getContext().maxChildren()){ // ==M
             currentLevel = level;
             List<TreeNode> listPair =(List<TreeNode>) overflowTreatment(level, node, newData);
 
             // Split occurred, Go up a level to fix the problem
-            while (listPair != null && currentLevel != 1 && currentLevel != 0){ // NOT THE ROOT
-                currentLevel = level - 1;
+            while (listPair != null && currentLevel != 0){ // NOT THE ROOT
+                currentLevel = currentLevel - 1;
                 TreeNode parent = node.getParent();
                 parent.deleteChild(node);
 
                 // All splits entries fit in the tree node.
                 if (parent.childrenSize() + 2 <= parent.context().maxChildren()){
+                    listPair.get(0).setParent(parent);
+                    listPair.get(1).setParent(parent);
                     parent.add(listPair.get(0));
                     parent.add(listPair.get(1));
                     node = parent; // In order to fix the mbr later
                     listPair = null; // Break;
                 } else { // M+1 entries
+                    listPair.get(0).setParent(parent);
                     parent.add(listPair.get(0));
                     parent.fixMbr();
                     node = parent;
@@ -109,9 +104,11 @@ public class Insert {
                 }
             }
 
-            // Special Case: when the root has been split
-            if (listPair != null && currentLevel == 0) {
+            // Special Case: when the root has to be split
+            if (listPair != null) { //currentLevel == 0
                 TreeNode newRoot = new NotLeafNode(listPair, rtree.getContext());
+                listPair.get(0).setParent(newRoot);
+                listPair.get(1).setParent(newRoot);
                 rtree.setRoot(newRoot);
             }
         }
@@ -142,9 +139,11 @@ public class Insert {
             if (node == null){ // first root
                 return null;
             } else if (node instanceof LeafNode) {
-                return node;
+                //return node;
+                break;
             } else if (level == depth) {
-                return node;
+                break;
+                //return node;
             } else {
                 int childrenSize = node.childrenSize();
                 double[] S = new double[childrenSize];
@@ -185,6 +184,8 @@ public class Insert {
             depth += 1;
 
         }
+
+        return node;
     }
 
     /**
@@ -234,8 +235,8 @@ public class Insert {
     private <T extends HasGeometry> void reInsert(int level, TreeNode node, T newData){
         List<T> p = new ArrayList<>();
 
-        List<T> sorted = sortNodeReInsert(node, newData);
-        node.add(newData);
+        List<T> sorted = sortNodeReInsert(node, newData);   // Sorted is M+1
+        node.add(newData);  // Add the extra add too
 
         // Remove the first "p" objects, adjust the mbr and insert them again
         for (int i=0; i<node.context().getReInsertRate(); i++){

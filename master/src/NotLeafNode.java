@@ -1,4 +1,3 @@
-import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,6 @@ public class NotLeafNode implements TreeNode {
     private Rectangle rectangle;
     private Context context;
     private TreeNode parent;
-    private int index;
 
     public NotLeafNode(List<? extends TreeNode> children, Rectangle rectangle, Context context, TreeNode parent){
         this.children = children;
@@ -43,10 +41,11 @@ public class NotLeafNode implements TreeNode {
         fixMbr();
     }
 
+    // Possible error in the future, but it is okay now
     public <T extends HasGeometry> void add(T entry) {
         List<? extends TreeNode> tmp = NonLeafFunctions.add(entry, this);
         if (tmp != null){
-            children = tmp;
+            children = new ArrayList<>(tmp);
         } else {
             System.out.println("Children wasn't added in the NonLeafFunction.add().");
         }
