@@ -8,19 +8,36 @@ public class LeafNode implements TreeNode {
     private TreeNode parent;
     private int index;
 
+    public LeafNode (List<Entry> entries, Rectangle rectangle, Context context, TreeNode parent){
+        this.entries = entries;
+        this.rectangle = rectangle;
+        this.context = context;
+        this.parent = parent;
+    }
+
+
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context){
         this.entries = entries;
         this.rectangle = rectangle;
         this.context = context;
+        this.parent = null;
     }
-    
-//    public List<TreeNode> add(Entry entry) {
-//        return NonLeafHelper.add(entry, this);
-//    }
-//
-//    public NodeAndEntries<T, S> delete(Entry<? extends T, ? extends S> entry, boolean all) {
-//        return LeafHelper.delete(entry, all, this);
-//    }
+
+    public LeafNode(List<Entry> entries, Context context, TreeNode parent){
+        this.entries = entries;
+        this.context = context;
+        this.parent = parent;
+        fixMbr();
+    }
+
+    public LeafNode(List<Entry> entries, Context context){
+        this.entries = entries;
+        this.context = context;
+        this.parent = null;
+        fixMbr();
+    }
+
+
 
     public int childrenSize(){
         return entries.size();
@@ -64,15 +81,16 @@ public class LeafNode implements TreeNode {
         return parent;
     }
 
-//    public void fixRectangle(){
-//        rectangle = Utils.mbrPoints(entries);
-//    }
+    public void setParent(TreeNode parent){
+        this.parent = parent;
+    }
+
 
     public void deleteChild(Entry e){
         entries.remove(e);
     }
 
     public void deleteChild(TreeNode tn){
-        return;
+        //return;
     }
 }

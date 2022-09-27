@@ -10,8 +10,8 @@ public interface TreeNode extends HasGeometry{
     public <T extends HasGeometry> void add(T entry);
     public void fixMbr();
     public TreeNode getParent();
+    public void setParent(TreeNode parent);
     public Context context();
-    //public void fixRectangle();
     public void deleteChild(Entry e);
     public void deleteChild(TreeNode e);
 }
