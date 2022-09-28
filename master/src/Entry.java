@@ -1,4 +1,6 @@
-public class Entry implements HasGeometry {
+import java.io.Serializable;
+
+public class Entry implements HasGeometry, Serializable {
     private double[] featVec;
     private int blockId;
     private int recordId;

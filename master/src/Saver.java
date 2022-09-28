@@ -146,6 +146,26 @@ public class Saver extends FileManagement {
         return true;
     }
 
+    public boolean saveRtree(RTree rTree){
+        try{
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            OutputStream os = new FileOutputStream(Options.RTREE_INDEX_PATH);
+
+            oos.writeObject(rTree);    // Writing object to bos stream
+            oos.flush();                    // writing the unsaved of oos
+            byte[] myByteArray = bos.toByteArray();
+
+            os.write(myByteArray);
+            return true;        // Successfully saved the Dictionary
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;   // Failed
+
+    }
+
     private void blockZeroDataRegister(DataInfo block0){
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -158,13 +178,12 @@ public class Saver extends FileManagement {
             byte[] allData = is.readAllBytes();
 
             if (myByteArray.length > Options.BLOCK_SIZE){
-                System.out.printf("MAJOR BAG ALERT!!!\nBlock 0 is bigger than 32KB.");
+                System.out.println("MAJOR BAG ALERT!!!\nBlock 0 is bigger than 32KB.");
                 exit(1);                                                                                // A hard exit of the program
             }
 
-            for(int i=0; i<myByteArray.length;i++){ // Replace the first block
-                allData[i]=myByteArray[i];
-            }
+            // Replace the first block
+            System.arraycopy(myByteArray, 0, allData, 0, myByteArray.length);
             OutputStream os = new FileOutputStream(super.getFile());
 
             os.write(allData,0,allData.length);

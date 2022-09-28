@@ -27,10 +27,9 @@ public final class RTree implements Serializable {
         RTree rTree = new RTree(null, contextRoot);
         double[] vector = new double[2];
         Random r = new Random();
-        double randomValue;
         List<Entry> entries = new ArrayList<>();
 
-        for (int i=0; i<10000; i++){
+        for (int i=0; i<1000000; i++){
             vector[0] = -180 + (180 + 180) * r.nextDouble();
             vector[1] = -180 + (180 + 180) * r.nextDouble();
             entries.add(new Entry( vector.clone(), 1, i));
@@ -44,6 +43,9 @@ public final class RTree implements Serializable {
 
         //rTree.printTree();
         System.out.println("Depth: "+rTree.calculateDepth());
+
+        //Save the tree
+        rTree.save();
 
 
         System.out.println("ok");
@@ -106,6 +108,13 @@ public final class RTree implements Serializable {
         }
     }
 
+    public void save(){
+        Saver saver = new Saver();
+        if(!saver.saveRtree(this)){
+            System.out.println("Save of the Rtree failed.");
+        }
+    }
+
     /*
      * Printing a rough blueprint of the R*tree
      */
@@ -118,10 +127,7 @@ public final class RTree implements Serializable {
 
         nodes.add(node);
 
-        while (true){
-            if (nodes.isEmpty()){
-                break;
-            }
+        while (!nodes.isEmpty()){
             node = nodes.get(0);
             if(node instanceof LeafNode){
                 node.getRectangle().print();

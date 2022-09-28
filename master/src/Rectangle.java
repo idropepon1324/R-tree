@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public final class Rectangle implements Geometry, HasGeometry{
+public final class Rectangle implements Geometry, HasGeometry, Serializable {
     private double[] vector1;
     private double[] vector2;
 

@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Configures an RTree prior to instantiation of an {@link RTree}.
  */
-public final class Context{
+public final class Context implements Serializable {
 
     private final int maxChildren;
     private final int minChildren;

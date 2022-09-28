@@ -66,7 +66,11 @@ public class Insert {
             rtree.setRoot(new LeafNode(entry, rtree.getContext()));
             node = rtree.getRoot();
         } else if (node.childrenSize() < rtree.getContext().maxChildren()){    // <M
-            if(node instanceof NotLeafNode){
+
+            if (node instanceof NotLeafNode && newData instanceof Entry){
+                // Solves the 1 in 100000 error of entry trying to enter a not leaf node
+                insert(rtree.calculateDepth() - 100,newData);
+            }else if(node instanceof NotLeafNode){
                 node.add(newData);
             } else if (node instanceof LeafNode){
                 node.add((Entry) newData);
@@ -207,7 +211,11 @@ public class Insert {
             firstCall = true; // Reset its function
         } else {
             // Split()
-            if(node instanceof NotLeafNode){
+            if (node instanceof NotLeafNode && newData instanceof Entry){
+                // Solves the 1 in 100000 error of entry trying to enter a not leaf node
+                insert(rtree.calculateDepth()- 100,newData);
+
+            } else if(node instanceof NotLeafNode){
                 TreeNode addUp = (TreeNode) newData;
                 // Return the listPair of NotLeafNodes
                 return rtree.getContext().splitter().split((NotLeafNode)node, addUp, node.context());

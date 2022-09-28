@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Splitter {
+public class Splitter implements Serializable {
 
     /*
     * splitter: Split Algorithm for R* trees
@@ -27,59 +28,68 @@ public class Splitter {
     public Splitter(){
         //
     }
-//
+
 //    @SuppressWarnings("unchecked") // Cast, <? extends TreeNode> to <LeafNode>/<NotLeafNode> : If conditions are in place
 //    public static void main(String[] args) {
-//        //TODO Beginning of the report and the tidying up the warnings and the comments in the finished parts of the algorithm.
 //
-//        double[] v = new double[2];
-//        double[] v2 = new double[2];
-//        v[0] = 1.2;
-//        v[1] = 2.3;
-//        v2[0] = 3.3;
-//        v2[1] = 5.5;
-//        List<Entry> entries = new ArrayList<>();
-//        Rectangle rect = new Rectangle(v.clone(), v2.clone());
-//        entries.add(new Entry(v.clone(), 1, 1));
-//        entries.add(new Entry(v2.clone(), 1, 2));
-//        List<LeafNode> leafNodes = new ArrayList<>();
 //
-//        leafNodes.add(new LeafNode(entries, rect,new Context()));
-//
-//        List<NotLeafNode> notLeafNodes = new ArrayList<>();
-//        notLeafNodes.add(new NotLeafNode(leafNodes, rect, new Context()));
-//
-//        List<LeafNode> list =(List<LeafNode>) notLeafNodes.get(0).entries();
-//        System.out.println(list.get(0).getRectangle().getVector1()[0]);
-//        NotLeafNode node = new NotLeafNode(notLeafNodes, rect, new Context());
-//
-//        List<? extends TreeNode> tmpList = node.entries();
-//        System.out.println(tmpList.get(0).getClass());
-//        List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
-//        System.out.println(notlist.get(0).getRectangle().area());
-//
-//        System.out.println(LeafNode.class.equals(notlist.get(0).getClass()));
-//
-//        //List<NotLeafNode> notlist =(List<NotLeafNode>) node.entries();
-//
-//        double[] S = new double[10];
-//        for (double d: S){
-//            System.out.println(d);
-//        }
-//
-//        // Testing split... Sometime in the future
 //        Random r = new Random();
 //        List<Rectangle> rectangles = new ArrayList<>();
 //        double rangeMin = -180.0;
 //        double rangeMax = 180.0;
 //        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+//        double[] vec1 = new double[2];
+//        double[] vec2 = new double[2];
+//        vec1[0] = 1.1;
+//        vec1[1] = 1.2;
+//        vec2[0] = 2.2;
+//        vec2[1] = 2.3;
+//        rectangles.add(new Rectangle(vec1.clone(), vec2.clone()));
+//        vec1[0] = 5.1;
+//        vec1[1] = 5.2;
+//        vec2[0] = 6.2;
+//        vec2[1] = 6.3;
+//        rectangles.add(new Rectangle(vec1.clone(), vec2.clone()));
+//        vec1[0] = 3.1;
+//        vec1[1] = 3.2;
+//        vec2[0] = 4.2;
+//        vec2[1] = 4.3;
+//        rectangles.add(new Rectangle(vec1.clone(), vec2.clone()));
 //
-//        System.out.println("After==============");
-//        List<Integer> integers = new ArrayList<>();
-//        integers.add(1);
-//        integers.add(2);
-//        integers.add(3);
-//        System.out.println(integers.subList(0,1));
+//
+//
+//
+//        List<Double> listOne = new ArrayList<>();
+//        for (Rectangle rec: rectangles){
+//            double[] lowerPoint = rec.getVector2();
+//            listOne.add(lowerPoint[0]);
+//        }
+//        int n = listOne.size();
+//
+//        Integer[] indices = new Integer[n];
+//        for (int i = 0; i < n; ++i) {
+//            indices[i] = i;
+//        }
+//
+//        Arrays.sort(
+//                indices,
+//                new Comparator<Integer>() {
+//                    public int compare(Integer a, Integer b) {
+//                        return listOne.get(a).compareTo(listOne.get(b));
+//                    }
+//                });
+//        System.out.println("ListOne  and rect before reorder:");
+//        System.out.println(listOne);
+//        System.out.println(rectangles);
+//
+//        reorder(indices, listOne);
+//        reorder(indices, rectangles);
+//
+//
+//        System.out.println("ListOne  and rect after reorder:");
+//        System.out.println(listOne);
+//        System.out.println(rectangles);
+//
 //    }
 
 
@@ -101,7 +111,7 @@ public class Splitter {
 
 
         // Taking the different cases (NotLeaf and leaf node)
-        if (NotLeafNode.class.equals(addUp.getClass())){
+        if (addUp instanceof NotLeafNode){
             HashMap<Rectangle, NotLeafNode> map = new HashMap<>();
             List<NotLeafNode> list1 = new ArrayList<>();
             List<NotLeafNode> list2 = new ArrayList<>();
@@ -128,7 +138,7 @@ public class Splitter {
             splitNodes.add(new NotLeafNode(list1, Utils.mbrRect(listPair.get(0)), context));
             splitNodes.add(new NotLeafNode(list2, Utils.mbrRect(listPair.get(1)), context));
 
-        } else if (LeafNode.class.equals(addUp.getClass())){
+        } else if (addUp instanceof LeafNode){
             HashMap<Rectangle, LeafNode> map = new HashMap<>();
             List<LeafNode> list1 = new ArrayList<>();
             List<LeafNode> list2 = new ArrayList<>();
@@ -210,14 +220,17 @@ public class Splitter {
 
             // Creating a Hashmap with the lower point of the rectangle, in order to sort
             List<Rectangle> sortedRect = sortRectanglesLower(objects, i);
-            for(int k=0; k<(M-2*m+2); k++){
-                S[i] += Utils.mbrRect(sortedRect.subList(0,m+k)).perimeter() + Utils.mbrRect(sortedRect.subList(m+k,M+1)).perimeter();
+
+            for(int k=0; k<(M-2*m+2); k++){ //Serializable problem
+                S[i] += Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m+k))).perimeter() +
+                        Utils.mbrRect(new ArrayList<>(sortedRect.subList(m+k,M+1))).perimeter();
             }
 
             // Upper point Hashmap
-            sortedRect = sortRectanglesUpper(objects, i);
+            sortedRect = new ArrayList<>(sortRectanglesUpper(objects, i));
             for(int k=0; k<(M-2*m+2); k++){
-                S[i] += Utils.mbrRect(sortedRect.subList(0,m+k)).perimeter() + Utils.mbrRect(sortedRect.subList(m+k,M+1)).perimeter();
+                S[i] += Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m+k))).perimeter() +
+                        Utils.mbrRect(new ArrayList<>(sortedRect.subList(m+k,M+1))).perimeter();
             }
 
         }
@@ -244,7 +257,8 @@ public class Splitter {
             TreeMap<Double, Entry> sorted = new TreeMap<>(pointsMap);
             List<Entry> sortedPoints = new ArrayList<>(sorted.values());
             for(int k=0; k<(M-2*m+2); k++){
-                S[i] += Utils.mbrPoints(sortedPoints.subList(0,m+k)).perimeter() + Utils.mbrPoints(sortedPoints.subList(m+k,M+1)).perimeter();
+                S[i] += Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m+k))).perimeter() +
+                        Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(m+k,M+1))).perimeter();
             }
 
         }
@@ -264,25 +278,28 @@ public class Splitter {
         List<Rectangle> sortedRect = sortRectanglesLower(objects, axis);
 
         // Taking the first as the min
-        minOverlapArea = Utils.mbrRect(sortedRect.subList(0,m)).perimeter() + Utils.mbrRect(sortedRect.subList(m,M+1)).perimeter();
-        listPair.add(sortedRect.subList(0,m));
-        listPair.add(sortedRect.subList(m,M+1));
+        minOverlapArea = Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m))).perimeter() +
+                        Utils.mbrRect(new ArrayList<>(sortedRect.subList(m,M+1))).perimeter();
+        listPair.add(new ArrayList<>(sortedRect.subList(0,m)));
+        listPair.add(new ArrayList<>(sortedRect.subList(m,M+1)));
 
         for(int k=1; k<(M-2*m+2); k++){         // Continue for the rest distributions
-            overlapArea = Utils.mbrRect(sortedRect.subList(0,m+k)).intersectionArea(Utils.mbrRect(sortedRect.subList(m+k,M+1)));
+            overlapArea = Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m+k))).
+                    intersectionArea(Utils.mbrRect(new ArrayList<>(sortedRect.subList(m+k,M+1))));
             if (minOverlapArea > overlapArea ){
                 minOverlapArea = overlapArea;
                 listPair.clear();
-                listPair.add(sortedRect.subList(0,m+k));
-                listPair.add(sortedRect.subList(m+k,M+1));
+                listPair.add(new ArrayList<>(sortedRect.subList(0,m+k)));
+                listPair.add(new ArrayList<>(sortedRect.subList(m+k,M+1)));
 
             } else if (minOverlapArea == overlapArea ) {    // a rare occasion
                 minArea = Utils.mbrRect(listPair.get(0)).area() + Utils.mbrRect(listPair.get(1)).area();
-                Area = Utils.mbrRect(sortedRect.subList(0,m)).area() + Utils.mbrRect(sortedRect.subList(m,M+1)).area();
+                Area = Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m))).area() +
+                        Utils.mbrRect(new ArrayList<>(sortedRect.subList(m,M+1))).area();
                 if (minArea > Area){
                     listPair.clear();
-                    listPair.add(sortedRect.subList(0,m+k));
-                    listPair.add(sortedRect.subList(m+k,M+1));
+                    listPair.add(new ArrayList<>(sortedRect.subList(0,m+k)));
+                    listPair.add(new ArrayList<>(sortedRect.subList(m+k,M+1)));
                 }
             }
         }
@@ -291,20 +308,22 @@ public class Splitter {
         sortedRect = sortRectanglesUpper(objects, axis);
 
         for (int k=0; k<(M-2*m+2); k++){
-            overlapArea = Utils.mbrRect(sortedRect.subList(0,m+k)).intersectionArea(Utils.mbrRect(sortedRect.subList(m+k,M+1)));
+            overlapArea = Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m+k))).
+                    intersectionArea(Utils.mbrRect(new ArrayList<>(sortedRect.subList(m+k,M+1))));
             if (minOverlapArea > overlapArea ){
                 minOverlapArea = overlapArea;
                 listPair.clear();
-                listPair.add(sortedRect.subList(0,m+k));
-                listPair.add(sortedRect.subList(m+k,M+1));
+                listPair.add(new ArrayList<>(sortedRect.subList(0,m+k)));
+                listPair.add(new ArrayList<>(sortedRect.subList(m+k,M+1)));
 
             } else if (minOverlapArea == overlapArea ) {    // a rare occasion
                 minArea = Utils.mbrRect(listPair.get(0)).area() + Utils.mbrRect(listPair.get(1)).area();
-                Area = Utils.mbrRect(sortedRect.subList(0,m)).area() + Utils.mbrRect(sortedRect.subList(m,M+1)).area();
+                Area = Utils.mbrRect(new ArrayList<>(sortedRect.subList(0,m))).area() +
+                        Utils.mbrRect(new ArrayList<>(sortedRect.subList(m,M+1))).area();
                 if (minArea > Area){
                     listPair.clear();
-                    listPair.add(sortedRect.subList(0,m+k));
-                    listPair.add(sortedRect.subList(m+k,M+1));
+                    listPair.add(new ArrayList<>(sortedRect.subList(0,m+k)));
+                    listPair.add(new ArrayList<>(sortedRect.subList(m+k,M+1)));
                 }
             }
         }
@@ -329,25 +348,28 @@ public class Splitter {
         List<Entry> sortedPoints = new ArrayList<>(sorted.values());
 
         // Taking the first as the min
-        minOverlapArea = Utils.mbrPoints(sortedPoints.subList(0,m)).perimeter() + Utils.mbrPoints(sortedPoints.subList(m,M+1)).perimeter();
-        listPair.add(sortedPoints.subList(0,m));
-        listPair.add(sortedPoints.subList(m,M+1));
+        minOverlapArea = Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m))).perimeter() +
+                Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(m,M+1))).perimeter();
+        listPair.add(new ArrayList<>(sortedPoints.subList(0,m)));
+        listPair.add(new ArrayList<>(sortedPoints.subList(m,M+1)));
 
         for(int k=1; k<(M-2*m+2); k++){         // Continue for the rest distributions
-            overlapArea = Utils.mbrPoints(sortedPoints.subList(0,m+k)).intersectionArea(Utils.mbrPoints(sortedPoints.subList(m+k,M+1)));
+            overlapArea = Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m+k))).
+                    intersectionArea(Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(m+k,M+1))));
             if (minOverlapArea > overlapArea ){
                 minOverlapArea = overlapArea;
                 listPair.clear();
-                listPair.add(sortedPoints.subList(0,m+k));
-                listPair.add(sortedPoints.subList(m+k,M+1));
+                listPair.add(new ArrayList<>(sortedPoints.subList(0,m+k)));
+                listPair.add(new ArrayList<>(sortedPoints.subList(m+k,M+1)));
 
             } else if (minOverlapArea == overlapArea ) {    // a rare occasion
                 minArea = Utils.mbrPoints(listPair.get(0)).area() + Utils.mbrPoints(listPair.get(1)).area();
-                Area = Utils.mbrPoints(sortedPoints.subList(0,m)).area() + Utils.mbrPoints(sortedPoints.subList(m,M+1)).area();
+                Area = Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m))).area() +
+                        Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(m,M+1))).area();
                 if (minArea > Area){
                     listPair.clear();
-                    listPair.add(sortedPoints.subList(0,m+k));
-                    listPair.add(sortedPoints.subList(m+k,M+1));
+                    listPair.add(new ArrayList<>(sortedPoints.subList(0,m+k)));
+                    listPair.add(new ArrayList<>(sortedPoints.subList(m+k,M+1)));
                 }
             }
         }
@@ -355,25 +377,77 @@ public class Splitter {
         return listPair;
     }
 
+//    private List<Rectangle> sortRectanglesLower (List<Rectangle> objects, int axis){
+//        // Creating a Hashmap with the lower point of the rectangle, in order to sort
+//        HashMap<Double, Rectangle> rectangleMap = new HashMap<>();
+//        for (Rectangle r: objects){
+//            double[] lowerPoint = r.getVector1();
+//            rectangleMap.put(lowerPoint[axis], r);
+//        }
+//        TreeMap<Double, Rectangle> sorted = new TreeMap<>(rectangleMap);
+//
+//        if (objects.size() != sorted.size()){
+//            System.out.println("Error in object != sorted size in Splitter.sortRectanglesLower()");
+//            System.out.println("Objects:");
+//            for(Rectangle r: objects){
+//                r.print();
+//            }
+//            System.out.println("Sorted:");
+//            for(Rectangle r: sorted.values()){
+//                r.print();
+//            }
+//        }
+//
+//
+//        return new ArrayList<>(sorted.values());
+//    }
+
     private List<Rectangle> sortRectanglesLower (List<Rectangle> objects, int axis){
-        // Creating a Hashmap with the lower point of the rectangle, in order to sort
-        HashMap<Double, Rectangle> rectangleMap = new HashMap<>();
+        List<Double> listOne = new ArrayList<>();
         for (Rectangle r: objects){
             double[] lowerPoint = r.getVector1();
-            rectangleMap.put(lowerPoint[axis], r);
+            listOne.add(lowerPoint[axis]);
         }
-        TreeMap<Double, Rectangle> sorted = new TreeMap<>(rectangleMap);
-        return new ArrayList<>(sorted.values());
+
+        return sorted(objects, listOne);
     }
 
     private List<Rectangle> sortRectanglesUpper (List<Rectangle> objects, int axis){
-        // Creating a Hashmap with the upper point of the rectangle, in order to sort
-        HashMap<Double, Rectangle> rectangleMap = new HashMap<>();
+        List<Double> listOne = new ArrayList<>();
         for (Rectangle r: objects){
             double[] lowerPoint = r.getVector2();
-            rectangleMap.put(lowerPoint[axis], r);
+            listOne.add(lowerPoint[axis]);
         }
-        TreeMap<Double, Rectangle> sorted = new TreeMap<>(rectangleMap);
-        return new ArrayList<>(sorted.values());
+
+        return sorted(objects, listOne);
+    }
+
+    private static <T> void reorder(Integer[] indices, List<T> mutatedInPlace) {
+        List<T> tempSpace = new ArrayList<>(indices.length);
+        for (int index : indices) {
+            tempSpace.add(mutatedInPlace.get(index));
+        }
+        mutatedInPlace.clear();
+        mutatedInPlace.addAll(tempSpace);
+    }
+
+    // Sort the ListOne of double in Ascending and the the objects accordingly
+    // Same point of reference
+    private static List<Rectangle> sorted(List<Rectangle> objects, List<Double> listOne){
+        int n = listOne.size();
+
+        Integer[] indices = new Integer[n];
+        for (int i = 0; i < n; ++i) {
+            indices[i] = i;
+        }
+
+        Arrays.sort(
+                indices,
+                Comparator.comparing(listOne::get));
+
+        reorder(indices, listOne);
+        reorder(indices, objects);
+
+        return new ArrayList<>(objects);
     }
 }
