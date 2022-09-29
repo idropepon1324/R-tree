@@ -164,4 +164,23 @@ public class Search {
 
     }
     /////////////////////---------------- search entry in the tree ----------------/////////////////////
+
+    /**
+     * This method searches through a list of Entries to find the entries that are
+     * included in the selected area/rectangle. Algorithm linear search: O(n)
+     * @param entries
+     * @param area
+     * @return
+     */
+    public List<Entry> searchAreaLinear(List<Entry> entries, Rectangle area){
+        List<Entry> foundEntries = new ArrayList<>();
+
+        for (int i=0; i<entries.size(); i++){
+            if (area.contains(entries.get(i).getVector()) ){
+                foundEntries.add(entries.get(i));
+            }
+        }
+
+        return foundEntries;
+    }
 }
