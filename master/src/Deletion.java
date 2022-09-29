@@ -9,6 +9,7 @@ public class Deletion {
 
 
     private List<TreeNode> listOfTn;
+    Insert insert = new Insert();
     public boolean deleteEntry(RTree r, TreeNode root,Entry e){
         TreeNode tn = returnTnOfSearchedEntry(root,e);
         listOfTn = new ArrayList<>();
@@ -27,7 +28,7 @@ public class Deletion {
             }
 
             for(int i=0;i<listOfEn.size();i++){
-                //insert listOfEn.get(i);
+                insert.insertData(r,r.calculateDepth(),listOfEn.get(i));
             }
 
         }else{
@@ -37,6 +38,7 @@ public class Deletion {
                 listOfTn.add(tn);
                 deleteEntryHelper(r, root, tn);
             }else {
+                p.deleteChild(tn);
                 fixRects(tn,root);
             }
         }
@@ -60,7 +62,7 @@ public class Deletion {
 
 
             for(int i=0;i<entriesHelper.size();i++){
-                //insert entriesHelper.get(i);
+                insert.insertData(r,r.calculateDepth(),listOfEn.get(i));
             }
 
 
@@ -80,7 +82,7 @@ public class Deletion {
 
 
                 for(int i=0;i<entriesHelper.size();i++){
-                    //insert entriesHelper.get(i);
+                    insert.insertData(r,r.calculateDepth(),listOfEn.get(i));
                 }
             }
         }

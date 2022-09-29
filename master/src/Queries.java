@@ -13,45 +13,96 @@ public class Queries {
     }
 
     /////////////////////--------------------skyline bbs---------------------////////////////////////////
-    //min heap for bbs
-    private PriorityQueue<TreeNode> minHeap = new PriorityQueue<TreeNode>(new Comparator<TreeNode>() {
-        @Override
-        public int compare(TreeNode o1, TreeNode o2) {
-            double distO1 = 0;
-            double distO2 = 0;
-            for(int i=0;i<o1.getRectangle().getVector1().length;i++){
-                distO1 += o1.getRectangle().getVector1()[i];
-                distO2 += o2.getRectangle().getVector1()[i];
+
+
+    private List<TreeNode> heapList; //list that i use like a min heap
+
+    private int indexOfMinTreeNodeList(List<TreeNode> treeNodes){
+        List<TreeNode> newTns;
+
+        for(int i=0;i<treeNodes.size();i++){
+            for(int j=0;j<treeNodes.get(0).getRectangle().getVector1().length;j++){
+                treeNodes.get(i).getRectangle().getVector1()[j] += 180;
+                treeNodes.get(i).getRectangle().getVector2()[j] += 180;
             }
-            return - Double.compare(distO1,distO2);
         }
-    });
+
+        int indexMin = 0;
+        TreeNode tnMin = treeNodes.get(0);
+        double distMin = 0;
+        for(int j=0;j<tnMin.getRectangle().getVector1().length;j++){
+            distMin += tnMin.getRectangle().getVector1().length;
+        }
+        double dist = 0;
+        for(int i=1;i<treeNodes.size();i++){
+            for(int j=0;j<tnMin.getRectangle().getVector1().length;j++){
+                dist += treeNodes.get(i).getRectangle().getVector1().length;
+            }
+            if(distMin>dist){
+                distMin = dist;
+                indexMin = i;
+                tnMin = treeNodes.get(i);
+
+            }
+        }
+
+        for(int i=0;i<treeNodes.size();i++){
+            for(int j=0;j<treeNodes.get(0).getRectangle().getVector1().length;j++){
+                treeNodes.get(i).getRectangle().getVector1()[j] -= 180;
+                treeNodes.get(i).getRectangle().getVector2()[j] -= 180;
+            }
+        }
+
+        return indexMin;
+    }
+
+
     //list for skyline bbs
     private List<Entry> skyLineList;
 
-    private List<Entry> skyLineBBS(TreeNode root){
+    public List<Entry> skyLineBBS(TreeNode root){
 
-        minHeap = new PriorityQueue<>();
+        //minHeap = new PriorityQueue<>();
+
+        heapList = new ArrayList<>();
         skyLineList = new ArrayList<>();
         for(int i=0;i<root.childrenSize();i++){
-            minHeap.add(root.child(i));
+            heapList.add(root.child(i));
         }
 
-        skyLineBBSHelper(minHeap,skyLineList);
+        System.out.println("first item of heap " + heapList.get(indexOfMinTreeNodeList(heapList)).getRectangle().getVector1()[0] + " " + heapList.get(indexOfMinTreeNodeList(heapList)).getRectangle().getVector1()[1]);
+        skyLineBBSHelper(heapList,skyLineList);
 
         return skyLineList;
 
     }
 
-    private List<Entry> skyLineBBSHelper(PriorityQueue<TreeNode> minHeap,List<Entry> skyLineList){
+    private void skyLineBBSHelper(List<TreeNode> heapList,List<Entry> skyLineList){
         TreeNode tn;
+        System.out.println("--------------------new round-----------------------");
 
-        if(minHeap.isEmpty()){
-            return skyLineList;
+        if(heapList.isEmpty()){
+            System.out.println("heap goy empty");
+            return;
         }
 
-        tn = minHeap.poll();
+        int index = indexOfMinTreeNodeList(heapList);
+        tn = heapList.get(index);
+        System.out.println("pirame to proto element " + heapList.get(indexOfMinTreeNodeList(heapList)).getRectangle().getVector1()[0] + " " + heapList.get(indexOfMinTreeNodeList(heapList)).getRectangle().getVector1()[1]);
+        heapList.remove(index);
+
         if(tn instanceof LeafNode){
+            System.out.println("ftasame se leaf node");
+
+            for (int i=0;i<heapList.size();i++){
+                System.out.println("sto heap exoume " + i + " " + heapList.get(i).getRectangle().getVector1()[0] + " " + heapList.get(i).getRectangle().getVector1()[1]);
+            }
+
+            for (int i=0;i<skyLineList.size();i++){
+                System.out.println("sto skiline exoume " + i + " " + skyLineList.get(i).getRectangle().getVector1()[0] + " " + skyLineList.get(i).getRectangle().getVector1()[1]);
+            }
+
+
             Entry minEnt = tn.entryChild(0);
             List<Entry> safeEntries = new ArrayList<Entry>();
 
@@ -59,7 +110,7 @@ public class Queries {
 
             for(int i=0;i<tn.childrenSize();i++){
                 boolean putit = true;
-                for(int j=0;j<=tn.childrenSize();j++){
+                for(int j=0;j<tn.childrenSize();j++){
                     if (j == i){
                         continue;
                     }else{
@@ -68,16 +119,24 @@ public class Queries {
                         boolean continuetrying = true;
                         for(int k = 0; k < tn.entryChild(i).getFeatVec().length; k++){
 
-                            if(counter1>0 && counter1+counter2==skyLineList.get(j).getFeatVec().length){
+                            //aftos o kodikas apodiknii oti kapio allo entryChild katakta i oxi to entryChild(i).
+                            //den apodiknii oti to entryChild(i) ine kataktitis
+                            if(tn.entryChild(i).getFeatVec()[k] + 180 > tn.entryChild(j).getFeatVec()[k] + 180){
+                                counter1 += 1;
+                            }else if(tn.entryChild(i).getFeatVec()[k] + 180 == tn.entryChild(j).getFeatVec()[k] + 180){
+                                counter2 += 1;
+                            }
+
+                            if(counter1>0 && counter1+counter2==tn.entryChild(i).getFeatVec().length){
                                 continuetrying = false;
                                 break;
                             }
 
-                            if(tn.entryChild(i).getFeatVec()[k]<tn.entryChild(i).getFeatVec()[k]){
-                                counter1 += 1;
-                            }else if(tn.entryChild(i).getFeatVec()[k]==tn.entryChild(i).getFeatVec()[k]){
-                                counter2 += 1;
-                            }
+                        }
+                        if(continuetrying==false){
+                            System.out.println("afto to antikimeno kataktite");
+                            putit=false;
+                            break;
                         }
                     }
                 }
@@ -86,26 +145,35 @@ public class Queries {
                 }
             }
 
+            for (int i=0;i<safeEntries.size();i++){
+                System.out.println("sto safeEntries exoume " + i + " " + safeEntries.get(i).getRectangle().getVector1()[0] + " " + safeEntries.get(i).getRectangle().getVector1()[1]);
+            }
 
             for(int i=0;i<safeEntries.size();i++){
                 boolean putit = true;
-                for (int j=0;j<=skyLineList.size();j++){
+                for (int j=0;j<skyLineList.size();j++){
                     int counter1 = 0;
                     int counter2 = 0;
                     boolean continuetrying = true;
                     for(int k = 0; k < tn.entryChild(i).getFeatVec().length; k++){
-                        if(counter1>0 && counter1+counter2==skyLineList.get(j).getFeatVec().length){
+
+
+                        //aftos o kodikas apodiknii oti kapio allo child.rectangle katakta i oxi to child.rectangle(i).
+                        //den apodiknii oti to child.rectangle(i) ine kataktitis
+                        if(skyLineList.get(j).getFeatVec()[k] + 180 < safeEntries.get(i).getFeatVec()[k] + 180){
+                            counter1 += 1;
+                        }else if(skyLineList.get(j).getFeatVec()[k] + 180 == safeEntries.get(i).getFeatVec()[k] + 180){
+                            counter2 += 1;
+                        }
+
+                        if(counter1>0 && counter1+counter2==tn.entryChild(i).getFeatVec().length){
                             continuetrying = false;
                             break;
                         }
 
-                        if(skyLineList.get(j).getFeatVec()[k]<safeEntries.get(i).getFeatVec()[k]){
-                            counter1 += 1;
-                        }else if(skyLineList.get(j).getFeatVec()[k]==safeEntries.get(i).getFeatVec()[k]){
-                            counter2 += 1;
-                        }
                     }
                     if(continuetrying==false){
+                        System.out.println("afto to antikimeno kataktite");
                         putit=false;
                         break;
                     }
@@ -117,6 +185,16 @@ public class Queries {
 
         }else {
 
+            System.out.println("den imaste se leafnode");
+
+            for (int i=0;i<heapList.size();i++){
+                System.out.println("sto heap exoume " + i + " " + heapList.get(i).getRectangle().getVector1()[0] + " " + heapList.get(i).getRectangle().getVector1()[1]);
+            }
+
+            for (int i=0;i<skyLineList.size();i++){
+                System.out.println("sto skiline exoume " + i + " " + skyLineList.get(i).getRectangle().getVector1()[0] + " " + skyLineList.get(i).getRectangle().getVector1()[1]);
+            }
+
             for(int i=0;i<tn.childrenSize();i++){     //trexa ta pedia
                 boolean putit = true;
                 for(int j=0;j<skyLineList.size();j++){ //tsekare an to sigekrimeno pedi bori na bi sto heap i an iparxi kapio simio pou to kiriarxi
@@ -125,15 +203,19 @@ public class Queries {
                     boolean continuetrying = true;
                     for(int k=0;k<skyLineList.get(j).getFeatVec().length;k++){ //kane to tsek gia ola ta vectors
 
-                        if(counter1>0 && counter1+counter2==skyLineList.get(j).getFeatVec().length){
-                            continuetrying = false;
-                            break;
+
+
+                        //aftos o kodikas apodiknii oti kapio allo child.rectangle katakta i oxi to child.rectangle(i).
+                        //den apodiknii oti to child.rectangle(i) ine kataktitis
+                        if(skyLineList.get(j).getFeatVec()[k] + 180 < tn.child(i).getRectangle().getVector1()[k] + 180){
+                            counter1 += 1;
+                        }else if(skyLineList.get(j).getFeatVec()[k] + 180 == tn.child(i).getRectangle().getVector1()[k] + 180){
+                            counter2 += 1;
                         }
 
-                        if(skyLineList.get(j).getFeatVec()[k]<tn.child(i).getRectangle().getVector1()[k]){
-                            counter1 += 1;
-                        }else if(skyLineList.get(j).getFeatVec()[k]==tn.child(i).getRectangle().getVector1()[k]){
-                            counter2 += 1;
+                        if(counter1>0 && counter1+counter2==tn.entryChild(i).getFeatVec().length){
+                            continuetrying = false;
+                            break;
                         }
 
                     }
@@ -146,15 +228,15 @@ public class Queries {
 
                 //ean to put it kataliksi true tote valto sto heap(den iparxi simio entry pou na to kiriarxi)
                 if(putit==true) {
-                    minHeap.add(tn.child(i));
+                    heapList.add(tn.child(i));
                 }
             }
 
         }
 
-        skyLineBBSHelper(minHeap,skyLineList);
+        skyLineBBSHelper(heapList,skyLineList);
 
-        return null;
+        return;
     }
     /////////////////////--------------------skyline bbs---------------------////////////////////////////
 
@@ -212,8 +294,30 @@ public class Queries {
         return min;
     }
 
+    private int getIndexOfMaxDistOfEntryFromEntriesList(Entry p, List<Entry> ens){
+        int indexMax = 0;
+        for(int i=1;i<ens.size();i++){
+            if(pointDist(p,ens.get(indexMax)) > pointDist(p,ens.get(i))){
+                indexMax = i;
+            }
+        }
+        return indexMax;
+    }
 
-    public void nnSearch(TreeNode node, Entry point, Entry nearest){
+
+    public Entry nnSearch(TreeNode node, Entry point){
+        double[] fv = new double[point.getFeatVec().length];
+        Entry e = new Entry(fv,1,1);
+        for(int i=0;i<point.getFeatVec().length;i++){
+            e.getFeatVec()[i] = Integer.MAX_VALUE;
+        }
+        return nnSearchHelper(node,point,e);
+    }
+
+    //initialize nearest = inf
+    private Entry nnSearchHelper(TreeNode node, Entry point, Entry nearest){
+
+        System.out.println("-------------new round---------------------");
 
         TreeNode newNode;
         List<TreeNode> branchList = new ArrayList<>();
@@ -234,11 +338,12 @@ public class Queries {
             for(int i=0;i<branchList.size();i++){
                 newNode = branchList.get(i);
 
-                nnSearch(newNode,point,nearest);
+                nnSearchHelper(newNode,point,nearest);
 
                 pruneBranchListUpward(node,point,nearest,branchList);
             }
         }
+        return nearest;
     }
 
     private void genABLandSortIt(Entry point,TreeNode node, List<TreeNode> branchList){
@@ -283,14 +388,20 @@ public class Queries {
                     branchList.remove(node.child(i));
                 }
             }
+
+            /*
+            for(int j=0;j<Nearest.leangth){
+                if()
+            }
+            */
         }
     }
 
     private void pruneBranchListUpward(TreeNode node, Entry point, Entry nearest, List<TreeNode> branchList){
-        for(int i=0;i<node.childrenSize();i++){
-            double minDist = minDist(point,node.child(i).getRectangle());
+        for(int i=0;i<branchList.size();i++){
+            double minDist = minDist(point,branchList.get(i).getRectangle());
             if(pointDist(point,nearest)<minDist){
-                branchList.remove(node.child(i));
+                branchList.remove(branchList.get(i));
             }
         }
 

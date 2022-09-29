@@ -95,4 +95,9 @@ public class NotLeafNode implements TreeNode {
     public void deleteChild(TreeNode tn){
         children.remove(tn);
     }
+
+    public int compare(Object o) {
+
+        return 0;
+    }
 }

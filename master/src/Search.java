@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Search {
 
@@ -15,13 +12,15 @@ public class Search {
     private List<Entry> finalEntries;
     private Queue<TreeNode> tnQueue;
     public List<Entry> searchArea(TreeNode root, Rectangle rect){
+
         finalEntries = new ArrayList<>();
         tnQueue = new LinkedList<>();
-        tQueue.add(root);
+        tnQueue.add(root);
+        //System.out.println("edo vlepo an ine empty" + tnQueue.peek().getRectangle().getVector1()[0]);
         searchAreaHelper(rect);
         return finalEntries;
     }
-    public void searchAreaHelper(Rectangle rect){
+    private void searchAreaHelper(Rectangle rect){
 
         if(tnQueue.isEmpty()){
             return;
@@ -42,6 +41,8 @@ public class Search {
                 }
             }
         }
+
+        searchAreaHelper(rect);
 
     }
 
@@ -87,6 +88,7 @@ public class Search {
     private Queue<TreeNode> tQueue;
     private boolean exists;
     public boolean searchEntry(TreeNode root, Entry e){
+        tQueue = new LinkedList<>();
         exists = false;
         tnQueue = new LinkedList<>();
         tQueue.add(root);

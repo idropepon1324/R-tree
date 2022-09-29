@@ -15,4 +15,5 @@ public interface TreeNode extends HasGeometry, Serializable {
     public Context context();
     public void deleteChild(Entry e);
     public void deleteChild(TreeNode e);
+
 }
