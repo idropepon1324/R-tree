@@ -274,7 +274,7 @@ public class Queries {
     }
 
     Entry e;
-    public Entry nnSearch(TreeNode node, Entry point, int k){
+    public Entry nnSearch(TreeNode node, Entry point,int k){
         double[] fv = new double[point.getFeatVec().length];
         e = new Entry(fv,1,1);
         for(int i=0;i<point.getFeatVec().length;i++){
