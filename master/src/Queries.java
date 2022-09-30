@@ -60,6 +60,13 @@ public class Queries {
     //list for skyline bbs
     private List<Entry> skyLineList;
 
+    /**
+     * The skyLineBBS algorithm returns the skyline of the R*-TREE
+     *
+     * @param //the root node of the tree
+     * @return a List of entries which belong to the skyline
+     * @throws IndexOutOfBoundsException {@inheritDoc}
+     */
     public List<Entry> skyLineBBS(TreeNode root){
 
         //minHeap = new PriorityQueue<>();
@@ -162,6 +169,42 @@ public class Queries {
                 }
             }
 
+
+            for(int i=0;i<skyLineList.size();i++){
+                boolean putit = true;
+                for(int j=0;j<skyLineList.size();j++){
+                    if(i==j){
+                        continue;
+                    }
+                    int counter1 = 0;
+                    int counter2 = 0;
+                    boolean continuetrying = true;
+                    for(int k=0;k<skyLineList.get(j).getFeatVec().length;k++){
+                        //aftos o kodikas apodiknii oti kapio allo child.rectangle katakta i oxi to child.rectangle(i).
+                        //den apodiknii oti to child.rectangle(i) ine kataktitis
+                        if(skyLineList.get(j).getFeatVec()[k] + 180 < skyLineList.get(i).getFeatVec()[k] + 180){
+                            counter1 += 1;
+                        }else if(skyLineList.get(j).getFeatVec()[k] + 180 == skyLineList.get(i).getFeatVec()[k] + 180){
+                            counter2 += 1;
+                        }
+
+                        if(counter1>0 && counter1+counter2==skyLineList.get(i).getFeatVec().length){
+                            continuetrying = false;
+                            break;
+                        }
+                    }
+                    if(continuetrying==false){
+                        putit=false;
+                        break;
+                    }
+                }
+                if(putit==false) {
+                    skyLineList.remove(i);
+                    i--;
+                }
+            }
+
+
         }else {
 
             for(int i=0;i<tn.childrenSize();i++){     //trexa ta pedia
@@ -182,7 +225,7 @@ public class Queries {
                             counter2 += 1;
                         }
 
-                        if(counter1>0 && counter1+counter2==tn.entryChild(i).getFeatVec().length){
+                        if(counter1>0 && counter1+counter2==tn.child(i).getRectangle().getVector1().length){
                             continuetrying = false;
                             break;
                         }
@@ -200,6 +243,7 @@ public class Queries {
                     heapList.add(tn.child(i));
                 }
             }
+
 
         }
 
@@ -273,8 +317,13 @@ public class Queries {
         return indexMax;
     }
 
+    /**
+     * Returns a List of K nearest Entries to Entry point
+     * @param TreeNode node(the root), Entry point
+     * @return the nearest entry
+     */
     Entry e;
-    public Entry nnSearch(TreeNode node, Entry point,int k){
+    public Entry nnSearch(TreeNode node, Entry point){
         double[] fv = new double[point.getFeatVec().length];
         e = new Entry(fv,1,1);
         for(int i=0;i<point.getFeatVec().length;i++){
@@ -375,6 +424,7 @@ public class Queries {
                 }
                 if(minDist > minMaxDist(point,branchList.get(j).getRectangle())){
                     branchList.remove(branchList.get(i));
+                    i--;
                 }
             }
 
@@ -386,6 +436,7 @@ public class Queries {
             double minDist = minDist(point,branchList.get(i).getRectangle());
             if(pointDist(point,nearest)<minDist){
                 branchList.remove(branchList.get(i));
+                i--;
             }
         }
 
@@ -408,6 +459,15 @@ public class Queries {
 
     /////////////////////--------------------K-NN-algorithm---------------------////////////////////////////
 
+
+
+    /**
+     * Returns a List of K nearest Entries to Entry point
+     * @param node the root
+     * @param point
+     * @param k how many points we search
+     * @return a list of k nearest entries
+     */
     List<Entry> ens;
     public List<Entry> knnSearch(TreeNode node, Entry point, int k){
         double[] fv = new double[point.getFeatVec().length];
@@ -549,7 +609,6 @@ public class Queries {
             }
         }
     }
-
     private void shortBranchList(Entry p,List<TreeNode> branchList){
 
 
@@ -575,12 +634,13 @@ public class Queries {
     /////////////////////--------------------K-NN-algorithm---------------------////////////////////////////
 
 
-
-
-
-
-
-
+    /**
+     * Linear search of the k nearest neighbour
+     * @param entries the entries
+     * @param point the entry we want to find the k nearest
+     * @param k how many nearest points we want
+     * @return returns the List of the Entries
+     */
     public List<Entry> knnSearchLinear(List<Entry> entries, Entry point, int k){
         List<Entry> nearestEntries = new ArrayList<>();
         double min;
@@ -604,6 +664,12 @@ public class Queries {
         return nearestEntries;
     }
 
+
+    /**
+     * Linear search to find the skyline
+     * @param entries list of entries
+     * @return
+     */
     public List<Entry> skyLineLinear(List<Entry> entries){
         List<Entry> skyLineEntries = new ArrayList<>();
         Entry entry;

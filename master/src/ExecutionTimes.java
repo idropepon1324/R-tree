@@ -33,7 +33,7 @@ public class ExecutionTimes {
         Queries query = new Queries();
         long timeStart, timeFinish, result;
         timeStart = System.currentTimeMillis();
-        query.nnSearch(rTree.getRoot(), point, k);
+        query.nnSearch(rTree.getRoot(), point);
         timeFinish = System.currentTimeMillis();
         result = timeFinish - timeStart;
 

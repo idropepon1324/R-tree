@@ -39,10 +39,11 @@ public final class RTree implements Serializable {
         }
 
         for (int i=0; i<entries.size(); i++){
-            System.out.println("Entering the : " +i+" st entry.");
+            //System.out.println("Entering the : " +i+" st entry.");
             insert.insertData(rTree, rTree.calculateDepth(), entries.get(i));
-            rTree.printTree();
+            //rTree.printTree();
         }
+        rTree.printTree();
 
         //rTree.printTree();
         System.out.println("Depth: "+rTree.calculateDepth());
@@ -116,12 +117,16 @@ public final class RTree implements Serializable {
         /*
         List<Entry> skyline = q.skyLineBBS(rTree.root);
 
-        for(int i=0;i<skyline.size();i++){
-            System.out.println(skyline.get(i).getFeatVec()[0] + " " + skyline.get(i).getFeatVec()[1]);
-        }
-        */
+        System.out.println("skyline size: " + " " + skyline.size());
 
+
+        List<Entry> skylineLinear = q.skyLineLinear(entries);
+        System.out.println("skyline linear size: " + " " + skylineLinear.size());
+        */
         //-------------------------------------testing NN-------------------------------------
+
+
+
         /*
         System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
         System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
@@ -130,6 +135,7 @@ public final class RTree implements Serializable {
         System.out.println(e.getFeatVec()[0]+" "+e.getFeatVec()[1]);
 
         */
+
 
         System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
         System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);

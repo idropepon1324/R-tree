@@ -11,6 +11,13 @@ public class Search {
     /////////////////////---------------- search entries rectangle ----------------/////////////////////
     private List<Entry> finalEntries;
     private Queue<TreeNode> tnQueue;
+
+    /**
+     * search an area(rectangle)
+     * @param root the root of the r*-tree
+     * @param rect the area(rectangle) we want to search
+     * @return the list of entries in the area(rectangle)
+     */
     public List<Entry> searchArea(TreeNode root, Rectangle rect){
 
         finalEntries = new ArrayList<>();
@@ -87,6 +94,13 @@ public class Search {
     /////////////////////---------------- search entry in the tree ----------------/////////////////////
     private Queue<TreeNode> tQueue;
     private boolean exists;
+
+    /**
+     * search an entry in the R*TREE
+     * @param root the root of the tree
+     * @param e the entry we want to search
+     * @return true if the entry exists, else false
+     */
     public boolean searchEntry(TreeNode root, Entry e){
         tQueue = new LinkedList<>();
         exists = false;

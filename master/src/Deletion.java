@@ -10,6 +10,14 @@ public class Deletion {
 
     private List<TreeNode> listOfTn;
     Insert insert = new Insert();
+
+    /**
+     * It deletes an entry from the r*-tree
+     * @param r the r*-tree
+     * @param root the root of the R*-TREE
+     * @param e the entry we went to delete
+     * @return returns true if the entry exist, else false
+     */
     public boolean deleteEntry(RTree r, TreeNode root,Entry e){
         TreeNode tn = returnTnOfSearchedEntry(root,e);
         listOfTn = new ArrayList<>();
