@@ -113,29 +113,33 @@ public final class RTree implements Serializable {
 
         //-------------------------------------testing skyline-------------------------------------
 
-
+        /*
         List<Entry> skyline = q.skyLineBBS(rTree.root);
-        System.out.println("BBS skyline:");
 
         for(int i=0;i<skyline.size();i++){
             System.out.println(skyline.get(i).getFeatVec()[0] + " " + skyline.get(i).getFeatVec()[1]);
         }
-
-        skyline = q.skyLineLinear(entries);
-
-        System.out.println("Linear skyline:");
-
-        for(int i=0;i<skyline.size();i++){
-            System.out.println(skyline.get(i).getFeatVec()[0] + " " + skyline.get(i).getFeatVec()[1]);
-        }
-
-
+        */
 
         //-------------------------------------testing NN-------------------------------------
+        /*
+        System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
+        System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
 
-//        Entry E = q.nnSearch(rTree.root,entries.get(3), 1);
-//
-//        System.out.println(E.getFeatVec()[0]+" "+E.getFeatVec()[1]);
+        Entry e = q.nnSearch(rTree.root,entries.get(2),1);
+        System.out.println(e.getFeatVec()[0]+" "+e.getFeatVec()[1]);
+
+        */
+
+        System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
+        System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
+
+        List<Entry> ens;
+        ens = q.knnSearch(rTree.root,entries.get(2),3);
+        for(int i=0;i<ens.size();i++) {
+            System.out.println(ens.get(i).getFeatVec()[0] + " " + ens.get(i).getFeatVec()[1]);
+        }
+
 
         /*
         vector[0]=1;
