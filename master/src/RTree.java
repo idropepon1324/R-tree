@@ -141,7 +141,7 @@ public final class RTree implements Serializable {
         System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
 
         List<Entry> ens;
-        ens = q.knnSearch(rTree.root,entries.get(2),3);
+        ens = q.knnSearch(rTree.root,entries.get(2).getFeatVec(),3);
         for(int i=0;i<ens.size();i++) {
             System.out.println(ens.get(i).getFeatVec()[0] + " " + ens.get(i).getFeatVec()[1]);
         }
