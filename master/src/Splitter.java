@@ -248,14 +248,12 @@ public class Splitter implements Serializable {
         double[] S = new double[MAX_DIMENSIONS];  // an S for each dimension
 
         for (int i=0; i<MAX_DIMENSIONS; i++){
-
-            // Creating a Hashmap with the lower point of the rectangle, in order to sort
-            HashMap<Double, Entry> pointsMap = new HashMap<>();
+            List<Double> listOne = new ArrayList<>();
             for (Entry e: objects){
-                pointsMap.put(e.getVector()[i], e);
+                listOne.add(e.getVector()[i]);
             }
-            TreeMap<Double, Entry> sorted = new TreeMap<>(pointsMap);
-            List<Entry> sortedPoints = new ArrayList<>(sorted.values());
+            List<Entry> sortedPoints = sorted(objects, listOne);
+
             for(int k=0; k<(M-2*m+2); k++){
                 S[i] += Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m+k))).perimeter() +
                         Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(m+k,M+1))).perimeter();
@@ -339,13 +337,11 @@ public class Splitter implements Serializable {
 
         List<List<Entry>> listPair = new ArrayList<>();
 
-        HashMap<Double, Entry> entryMap = new HashMap<>();
-        for (Entry p: objects){
-            double[] point = p.getVector();
-            entryMap.put(point[axis], p);
+        List<Double> listOne = new ArrayList<>();
+        for(Entry e: objects){
+            listOne.add(e.getVector()[axis]);
         }
-        TreeMap<Double, Entry> sorted = new TreeMap<>(entryMap);
-        List<Entry> sortedPoints = new ArrayList<>(sorted.values());
+        List<Entry> sortedPoints = sorted(objects, listOne);
 
         // Taking the first as the min
         minOverlapArea = Utils.mbrPoints(new ArrayList<>(sortedPoints.subList(0,m))).perimeter() +
@@ -433,7 +429,7 @@ public class Splitter implements Serializable {
 
     // Sort the ListOne of double in Ascending and the the objects accordingly
     // Same point of reference
-    private static List<Rectangle> sorted(List<Rectangle> objects, List<Double> listOne){
+    private static <T> List<T> sorted(List<T> objects, List<Double> listOne){
         int n = listOne.size();
 
         Integer[] indices = new Integer[n];

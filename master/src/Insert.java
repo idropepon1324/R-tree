@@ -291,4 +291,52 @@ public class Insert {
         sorted.putAll(map);
         return new ArrayList<>(sorted.values());
     }
+
+    public void bottomUpInsertion(List<Entry> entriesOrig, Context context){
+
+        int p = (int) Math.floor(context.maxChildren() * 0.8);  // content of every node
+        List<LeafNode> leafNodes = new ArrayList<>();
+        List<Entry> entries = new ArrayList<>(entriesOrig);
+        List<Entry> leafNodesFactory;
+        Entry min;
+        double[] point;
+
+        while (!entries.isEmpty()){ // Create all the leaf nodes
+            leafNodesFactory = new ArrayList<>();
+
+            for (int i=0; i<p; i++){    // Create a leaf node
+                if (entries.isEmpty()){
+                    break;
+                }
+                min = entries.get(0);
+                for (Entry entry : entries) {
+                    point = min.getVector();
+                    for (int j = 0; j < point.length; j++) {    // Find the min
+                        if (point[j] > entry.getPoint()[j]) {
+                            min = entry;
+                            break;
+                        }
+                    }
+
+                }
+
+                leafNodesFactory.add(min);
+                entries.remove(min);
+            }
+
+            leafNodes.add(new LeafNode(leafNodesFactory, Utils.mbrPoints(leafNodesFactory), context));
+
+        }
+
+        // Remove the last node and save the entries if it is less than minimum amount
+        if (leafNodes.get(leafNodes.size()-1).childrenSize() < context.minChildren()){
+            leafNodesFactory = leafNodes.get(leafNodes.size()-1).entries();
+            leafNodes.remove(leafNodes.get(leafNodes.size()-1));
+        } else {
+            leafNodesFactory = null;
+        }
+
+
+
+    }
 }

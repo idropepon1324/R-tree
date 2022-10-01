@@ -22,38 +22,35 @@ public final class RTree implements Serializable {
      * Thirds sus: No split in level 1 and every new entry disappear. Solved. and many more.
      */
     public static void main(String[] args) {
-        Context contextRoot = new Context(2,3,2);
+        Context contextRoot = new Context(2,5,2);
         Insert insert = new Insert();
         RTree rTree = new RTree(null, contextRoot);
         double[] vector = new double[2];
         Random r = new Random();
-        double randomValue;
         List<Entry> entries = new ArrayList<>();
 
 
-        for (int i=0; i<10; i++){
+        for (int i=0; i<100000; i++){
             vector[0] = -180 + (180 + 180) * r.nextDouble();
             vector[1] = -180 + (180 + 180) * r.nextDouble();
-            System.out.println(vector);
             entries.add(new Entry( vector.clone(), 1, i));
         }
 
-        for (int i=0; i<entries.size(); i++){
+        for (Entry entry : entries) {
             //System.out.println("Entering the : " +i+" st entry.");
-            insert.insertData(rTree, rTree.calculateDepth(), entries.get(i));
+            insert.insertData(rTree, rTree.calculateDepth(), entry);
             //rTree.printTree();
         }
-        rTree.printTree();
 
         //rTree.printTree();
         System.out.println("Depth: "+rTree.calculateDepth());
 
 
         System.out.println("ok");
-
-        Queries q = new Queries();
-
-        Search s = new Search();
+//
+//        Queries q = new Queries();
+//
+//        Search s = new Search();
 
 
 
@@ -114,38 +111,29 @@ public final class RTree implements Serializable {
 
         //-------------------------------------testing skyline-------------------------------------
 
-        /*
-        List<Entry> skyline = q.skyLineBBS(rTree.root);
+//
+//        List<Entry> skyline = q.skyLineBBS(rTree.root);
+//        System.out.println("BBS skyline:");
+//
+//        for(int i=0;i<skyline.size();i++){
+//            System.out.println(skyline.get(i).getFeatVec()[0] + " " + skyline.get(i).getFeatVec()[1]);
+//        }
+//
+//        skyline = q.skyLineLinear(entries);
+//
+//        System.out.println("Linear skyline:");
+//
+//        for(int i=0;i<skyline.size();i++){
+//            System.out.println(skyline.get(i).getFeatVec()[0] + " " + skyline.get(i).getFeatVec()[1]);
+//        }
+//
 
-        System.out.println("skyline size: " + " " + skyline.size());
 
-
-        List<Entry> skylineLinear = q.skyLineLinear(entries);
-        System.out.println("skyline linear size: " + " " + skylineLinear.size());
-        */
         //-------------------------------------testing NN-------------------------------------
 
-
-
-        /*
-        System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
-        System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
-
-        Entry e = q.nnSearch(rTree.root,entries.get(2),1);
-        System.out.println(e.getFeatVec()[0]+" "+e.getFeatVec()[1]);
-
-        */
-
-
-        System.out.println("///////////////////////////////////////\n/////////////////////////////////////\n///////////////////////////////");
-        System.out.println("to stixio pou psaxnume ine to: " + entries.get(2).getFeatVec()[0] + " " + entries.get(2).getFeatVec()[1]);
-
-        List<Entry> ens;
-        ens = q.knnSearch(rTree.root,entries.get(2).getFeatVec(),3);
-        for(int i=0;i<ens.size();i++) {
-            System.out.println(ens.get(i).getFeatVec()[0] + " " + ens.get(i).getFeatVec()[1]);
-        }
-
+//        Entry E = q.nnSearch(rTree.root,entries.get(3), 1);
+//
+//        System.out.println(E.getFeatVec()[0]+" "+E.getFeatVec()[1]);
 
         /*
         vector[0]=1;

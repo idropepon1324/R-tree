@@ -14,59 +14,12 @@ public class Utils {
      * mbr works but had/have small problems with nulls.
      */
 
-    public static void main(String[] args) {
-        List<Rectangle> rectangles = new ArrayList<>();
-        List<double[]> points = new ArrayList<>();
-        double[] tmp1 = new double[2];
-        double[] tmp2 = new double[2];
-        tmp1[0] = 2.2;
-        tmp1[1] = 4.4;
-        tmp2[0] = 3.5;
-        tmp2[1] = 7.6;
-        Rectangle r1 = new Rectangle(tmp1.clone(), tmp2.clone());
-        rectangles.add(r1);
-        points.add(tmp1.clone());
-        points.add(tmp2.clone());
-
-        tmp1[0] = 5.1;
-        tmp1[1] = 2.1;
-        tmp2[0] = 8.3;
-        tmp2[1] = 4.9;
-        Rectangle r2 = new Rectangle(tmp1.clone(), tmp2.clone());
-        rectangles.add(r2);
-
-        tmp1[0] = 11.7;
-        tmp1[1] = -8.9;
-        tmp2[0] = 15.1;
-        tmp2[1] = 89.8;
-        Rectangle r3 = new Rectangle(tmp1.clone(), tmp2.clone());
-        rectangles.add(r3);
-        points.add(tmp1.clone());
-        points.add(tmp2.clone());
-
-        Rectangle rnew = mbrRect(rectangles);
-        //Rectangle rnew2 = mbrPoints(points);
-
-        System.out.println("After");
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(tmp2.clone(),1,2));
-        //entries.get(0).getRectangle().print();
-        TreeNode root = new LeafNode(entries,new Context());
-        root.getRectangle().print();
-        System.out.println("ok");
-
-        //root.fixMbr();
-        //root.getRectangle().print();
-
-
-    }
-
     private Utils(){
         // Prevent initializations
     }
 
     /**
-     * This function takes Treenodes and returns the mbr that
+     * This function takes Tree nodes and returns the mbr that
      * their children create.
      * @param node a TreeNode
      * @param <T> NotLeafNode or LeafNode

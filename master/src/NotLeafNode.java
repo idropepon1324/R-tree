@@ -1,4 +1,3 @@
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
 public class NotLeafNode implements TreeNode {
     private List<? extends TreeNode> children;
     private Rectangle rectangle;
-    private Context context;
+    private final Context context;
     private TreeNode parent;
 
     /**
@@ -69,7 +68,7 @@ public class NotLeafNode implements TreeNode {
     /**
      *
      * @param entry the entry we want to add to this leaf node
-     * @param <T>
+     * @param <T> an object that Has Geometry attributes
      */
     // Possible error in the future, but it is okay now
     public <T extends HasGeometry> void add(T entry) {
@@ -133,6 +132,7 @@ public class NotLeafNode implements TreeNode {
      *
      * @return list of the entry's children
      */
+    @SuppressWarnings("unchecked")
     public List<TreeNode> children(){
         return (List<TreeNode>) children;
     }
@@ -163,7 +163,7 @@ public class NotLeafNode implements TreeNode {
      * @param e the child we want to delete
      */
     public void deleteChild(Entry e){
-        return;
+        //return;
     }
 
     /**
@@ -174,8 +174,4 @@ public class NotLeafNode implements TreeNode {
         children.remove(tn);
     }
 
-    public int compare(Object o) {
-
-        return 0;
-    }
 }

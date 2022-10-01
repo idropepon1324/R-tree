@@ -97,7 +97,7 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
         return area;
     }
 
-    @Override
+
     public double distance(Rectangle r){
         return 0;
     }
@@ -106,7 +106,6 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
      *
      * @return this rectangle object
      */
-    @Override
     public Rectangle mbr(){
         return this;
     }

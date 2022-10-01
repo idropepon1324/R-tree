@@ -32,7 +32,7 @@ public class Loader extends FileManagement{
      */
     public <T extends Geometry> List<PosNode<T>> loadOsmNodes(){
         List<PosNode<T>> nodes = new ArrayList<>();
-        NodeList nList = null;
+        NodeList nList;
         try {
             DocumentBuilderFactory dbFact = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuild = dbFact.newDocumentBuilder();
@@ -137,6 +137,7 @@ public class Loader extends FileManagement{
      * @param <T> Rectangle
      * @return List of PosNode objects
      */
+    @SuppressWarnings("unchecked")
     public <T extends Geometry> List<PosNode<T>> loadStorageNodes(){
         List<PosNode<T>> nodeList = new ArrayList<>();
         Dictionary dictionary = loadDictionary();
@@ -152,39 +153,6 @@ public class Loader extends FileManagement{
             byte[] b = is.readAllBytes();
             byte[] tmp=new byte[byteLength];
 
-//            // Skip block 0 and this is block 1 only
-//            int i = 1;
-//            int entries = dictionary.getEntrySize(i);
-//            int value =  dictionary.getIndex(i,0) ;          // Header is the solution... 4 bytes
-//            // of the beginning of the file
-//            for(int k=0; k<byteLength;k++){
-//                tmp[k] = b[k + value];
-//            }
-//
-//            ByteArrayInputStream in = new ByteArrayInputStream(tmp);
-//            ObjectInputStream iss = new ObjectInputStream(in);
-//            PosNode<T> m = (PosNode) iss.readObject();
-//            //m.printInfo();
-//            nodeList.add(m);
-//
-//            // The rest of the block 1
-//            for (int j=1; j<entries; j++){  //Skip the first one
-//                value =  dictionary.getIndex(i,j) ;          // Header is the solution... 4 bytes
-//                // of the beginning of the file
-//                for(int k=0; k<HEADER;k++){
-//                    tmp[k] = b[k];
-//                }
-//                for (int k=HEADER; k<byteLength; k++){
-//                    tmp[k] = b[k + value - HEADER];
-//                }
-//
-//                in = new ByteArrayInputStream(tmp);
-//                iss = new ObjectInputStream(in);
-//                m = (PosNode) iss.readObject();
-//                //m.printInfo();
-//                nodeList.add(m);
-//            }
-
             int i;
             int entries;
             int value;
@@ -195,9 +163,7 @@ public class Loader extends FileManagement{
                     value =  dictionary.getIndex(i,j);          // Header is the solution... 4 bytes
                                                                                      // of the beginning of the file
                     //System.out.println("Value: "+(value-Options.BLOCK_SIZE*i+Options.BLOCK_SIZE));
-                    for(int k=0; k<HEADER;k++){
-                        tmp[k] = b[k];
-                    }
+                    System.arraycopy(b, 0, tmp, 0, HEADER);
                     // The second condition secures the Out of bound at the end of the file
                     for (int k=HEADER; k<byteLength && (k + value - HEADER)<b.length; k++){
                         tmp[k] = b[k + value - HEADER];
@@ -233,6 +199,7 @@ public class Loader extends FileManagement{
      * @param <T> Rectangle
      * @return PosNode that was found, if found.
      */
+    @SuppressWarnings("unchecked")
     public <T extends Geometry> PosNode<T> getStorageNode(int block, int record){
         Dictionary dictionary = loadDictionary();
         int value = dictionary.getIndex(block, record);
@@ -245,9 +212,7 @@ public class Loader extends FileManagement{
             byte[] tmp = new byte[byteLength];
 
             //System.out.println("Value: "+(value-Options.BLOCK_SIZE*i+Options.BLOCK_SIZE));
-            for(int k=0; k<HEADER;k++){
-                tmp[k] = b[k];
-            }
+            System.arraycopy(b, 0, tmp, 0, HEADER);
             // The second condition secures the Out of bound at the end of the file
             for (int k=HEADER; k<byteLength && (k + value - HEADER)<b.length; k++){
                 tmp[k] = b[k + value - HEADER];
@@ -303,34 +268,6 @@ public class Loader extends FileManagement{
             e.printStackTrace();
         }
         return new Dictionary();    // In error modes it sends an empty dictionary
-    }
-
-    // Testing method
-    public <T extends Geometry>  void testing(){
-        List<PosNode<T>> nodeList = new ArrayList<>();
-        try {
-            InputStream is = new FileInputStream(super.getFile());
-            byte[] b = null;
-            b = is.readNBytes(Options.BLOCK_SIZE);
-            //System.out.println(b.length);
-
-            ByteArrayInputStream in = new ByteArrayInputStream(b);
-            ObjectInputStream iss = new ObjectInputStream(in);
-            int counter =0;
-            byte bit;
-            for(int i=0; i<b.length; i++){
-                System.out.println(b[i]);
-            }
-            //MyNodeClass m = (MyNodeClass) iss.readObject();
-            //System.out.println(m.getId() + " " + m.getDim() + " " + m.getFeatVec()[0] + " " + m.getFeatVec()[1]);
-            // MyNodeClass m1 = (MyNodeClass) iss.readObject();
-            //System.out.println(m1.getId() + " " + m1.getDim() + " " + m1.getFeatVec()[0] + " " + m1.getFeatVec()[1]);
-        } catch (EOFException e){
-            // Eat the EOF exception
-            System.out.println("EOF Exception\n");
-        } catch (Exception e){
-            System.out.println(e);
-        }
     }
 
 }

@@ -79,11 +79,7 @@ public class Search {
 
         }
 
-        if (counter1==e.getFeatVec().length && counter2==e.getFeatVec().length){
-            return true;
-        }else {
-            return false;
-        }
+        return counter1 == e.getFeatVec().length && counter2 == e.getFeatVec().length;
 
     }
     /////////////////////---------------- search entries rectangle ----------------/////////////////////
@@ -107,11 +103,8 @@ public class Search {
         tnQueue = new LinkedList<>();
         tQueue.add(root);
         searchEntryHelper(e);
-        if(exists==true) {
-            return true;
-        }else {
-            return false;
-        }
+
+        return exists;
 
     }
 
@@ -119,7 +112,7 @@ public class Search {
 
 
         //an oura keni termatise
-        if(tQueue.isEmpty() || exists == true){
+        if(tQueue.isEmpty() || exists){
             return;
         }
 
@@ -149,7 +142,6 @@ public class Search {
             }
         }
         searchEntryHelper(e);
-        return;
 
     }
 
@@ -170,11 +162,7 @@ public class Search {
 
         }
 
-        if (counter1==e.getFeatVec().length && counter2==e.getFeatVec().length){
-            return true;
-        }else {
-            return false;
-        }
+        return counter1 == e.getFeatVec().length && counter2 == e.getFeatVec().length;
 
     }
     /////////////////////---------------- search entry in the tree ----------------/////////////////////
@@ -182,16 +170,16 @@ public class Search {
     /**
      * This method searches through a list of Entries to find the entries that are
      * included in the selected area/rectangle. Algorithm linear search: O(n)
-     * @param entries
-     * @param area
-     * @return
+     * @param entries a List of entries
+     * @param area a Rectangle
+     * @return a List of entries
      */
     public List<Entry> searchAreaLinear(List<Entry> entries, Rectangle area){
         List<Entry> foundEntries = new ArrayList<>();
 
-        for (int i=0; i<entries.size(); i++){
-            if (area.contains(entries.get(i).getVector()) ){
-                foundEntries.add(entries.get(i));
+        for (Entry entry : entries) {
+            if (area.contains(entry.getVector())) {
+                foundEntries.add(entry);
             }
         }
 

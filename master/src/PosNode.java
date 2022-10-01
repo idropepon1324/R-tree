@@ -67,12 +67,7 @@ public class PosNode<T extends Geometry> implements Serializable {
                 break;
             }
         }
-        if (node.getName().equals(name) && node.getId().equals(id) && flag){
-            return true;
-        }
-        return false;
-
-
+        return node.getName().equals(name) && node.getId().equals(id) && flag;
 
 
     }

@@ -5,7 +5,7 @@ public class LeafNode implements TreeNode {
 
     private List<Entry> entries;
     private Rectangle rectangle;
-    private Context context;
+    private final Context context;
     private TreeNode parent;
 
     /**
@@ -115,7 +115,7 @@ public class LeafNode implements TreeNode {
     /**
      *
      * @param entry the entry we want to add to this leaf node
-     * @param <T>
+     * @param <T> an object that Has Geometry attributes
      */
     public <T extends HasGeometry> void add(T entry){
 

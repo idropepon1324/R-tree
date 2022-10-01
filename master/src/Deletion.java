@@ -1,10 +1,14 @@
 import java.util.*;
 
+/**
+ * This class is created to contain the algorithm that the
+ * R* tree uses to delete entries from the tree.
+ */
 public class Deletion {
 
 
     public Deletion(){
-
+        //
     }
 
 
@@ -30,13 +34,13 @@ public class Deletion {
         if(tn.getParent().getRectangle().isEqualTo(root.getRectangle())){
 
             for(int i=0;i<tn.childrenSize();i++){
-                if(tn.entryChild(i).isEqualTo(e) == false) {
+                if(!tn.entryChild(i).isEqualTo(e)) {
                     listOfEn.add(tn.entryChild(i));
                 }
             }
 
-            for(int i=0;i<listOfEn.size();i++){
-                insert.insertData(r,r.calculateDepth(),listOfEn.get(i));
+            for (Entry entry : listOfEn) {
+                insert.insertData(r, r.calculateDepth(), entry);
             }
 
         }else{
@@ -64,8 +68,8 @@ public class Deletion {
 
             List<Entry> listOfEn = new ArrayList<>();
 
-            for(int i=0;i<listOfTn.size();i++){
-                getEntriesFromTreeNodeThatIsNotLeaf(listOfTn.get(i)); //ta vazoume aftomata stin entriesHelper
+            for (TreeNode treeNode : listOfTn) {
+                getEntriesFromTreeNodeThatIsNotLeaf(treeNode); //ta vazoume aftomata stin entriesHelper
             }
 
 
@@ -84,8 +88,8 @@ public class Deletion {
             }else {
                 List<Entry> listOfEn = new ArrayList<>();
 
-                for(int i=0;i<listOfTn.size();i++){
-                    getEntriesFromTreeNodeThatIsNotLeaf(listOfTn.get(i)); //ta vazoume aftomata stin entriesHelper
+                for (TreeNode treeNode : listOfTn) {
+                    getEntriesFromTreeNodeThatIsNotLeaf(treeNode); //ta vazoume aftomata stin entriesHelper
                 }
 
 
@@ -140,7 +144,7 @@ public class Deletion {
 
 
         //an oura keni termatise
-        if(tQueue.isEmpty() || exists == true){
+        if(tQueue.isEmpty() || exists){
             return;
         }
 
@@ -171,7 +175,6 @@ public class Deletion {
             }
         }
         searchEntryHelper(e);
-        return;
 
     }
 
@@ -192,11 +195,7 @@ public class Deletion {
 
         }
 
-        if (counter1==e.getFeatVec().length && counter2==e.getFeatVec().length){
-            return true;
-        }else {
-            return false;
-        }
+        return counter1 == e.getFeatVec().length && counter2 == e.getFeatVec().length;
 
     }
     /////////////////////---------------- search entry in the tree and return leaf tree node of that entry ----------------/////////////////////

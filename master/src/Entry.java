@@ -1,9 +1,14 @@
 import java.io.Serializable;
 
+/**
+ * This class represents an Entry in the R* tree.
+ * It contains short information, like the point and the position
+ * of that point to the hard disk/file.
+ */
 public class Entry implements HasGeometry, Serializable {
-    private double[] featVec;
-    private int blockId;
-    private int recordId;
+    private final double[] featVec;
+    private final int blockId;
+    private final int recordId;
 
     /**
      * The constructor

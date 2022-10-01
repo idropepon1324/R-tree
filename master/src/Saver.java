@@ -48,7 +48,7 @@ public class Saver extends FileManagement {
 
             int recordCounter = 0;
             int counterOld;
-            int blockCounter = 1; // for dictionary of records
+            //int blockCounter = 1; // for dictionary of records
             int byteCounter = 0;
             byte[] blockList = new byte[0];
 
