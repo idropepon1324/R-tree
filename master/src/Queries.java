@@ -410,9 +410,9 @@ public class Queries {
         }
 
         //System.out.println("mesa sto bracnh list exoume");
-        for(int i=0;i<branchList.size();i++){
+        //for(int i=0;i<branchList.size();i++){
             //System.out.println(branchList.get(i).getRectangle().getVector1()[0]+ " " + branchList.get(i).getRectangle().getVector1()[1]);
-        }
+        //}
     }
 
     private void pruneBranchListDownward(TreeNode node, Entry point, Entry Nearest, List<TreeNode> branchList){
@@ -500,7 +500,7 @@ public class Queries {
                     continue;
                 }
 
-                /*
+
                 boolean isFull = true;
                 for(int j=0;j<ens.size();j++){
                     if(ens.get(j).getFeatVec()[0] == 9999999){
@@ -508,7 +508,7 @@ public class Queries {
                         break;
                     }
                 }
-                */
+
 
                 dist = pointDist(point, node.entryChild(i));
                 if(dist < pointDist(point,ens.get(getIndexOfMaxDistOfEntryFromEntriesList(point,ens)))){
@@ -517,13 +517,10 @@ public class Queries {
                     //System.out.println(node.entryChild(i).getFeatVec()[0]+ " " + node.entryChild(i).getFeatVec()[1]);
                     //System.out.println("tha petaksoume afto gia na valoume to kenourgio ");
                     //System.out.println(ens.get(getIndexOfMaxDistOfEntryFromEntriesList(point,ens)).getFeatVec()[0]+ " " + ens.get(getIndexOfMaxDistOfEntryFromEntriesList(point,ens)).getFeatVec()[1]);
-                    ens.set(getIndexOfMaxDistOfEntryFromEntriesList(point,ens),node.entryChild(i));
-                    //ens.add(node.entryChild(i));
+                    ens.remove(getIndexOfMaxDistOfEntryFromEntriesList(point,ens));
+                    ens.add(node.entryChild(i));
 
-                }
-
-                /*
-                else if (!(isFull)){
+                }else if (!(isFull)){
                     //System.out.println("***vrikame kontinotero***");
                     //System.out.println(node.entryChild(i).getFeatVec()[0]+ " " + node.entryChild(i).getFeatVec()[1]);
                     //System.out.println("tha petaksoume afto gia na valoume to kenourgio ");
@@ -532,22 +529,22 @@ public class Queries {
                     ens.remove(getIndexOfMaxDistOfEntryFromEntriesList(point,ens));
                     ens.add(node.entryChild(i));
                 }
-                */
+
 
             }
         }else {
             //System.out.println("den ine leaf");
-            kGenABLandSortIt(point,node,branchList);
-
+            //kGenABLandSortIt(point,node,branchList);
+            genABLandSortIt(point,node,branchList);
 
             kPruneBranchListDownward(node,point,ens,branchList);
 
             shortBranchList(point,branchList);
 
             //System.out.println("meta to downward emine");
-            for(int i=0;i<branchList.size();i++){
+            //for(int i=0;i<branchList.size();i++){
                 //System.out.println(branchList.get(i).getRectangle().getVector1()[0] + " " + branchList.get(i).getRectangle().getVector1()[1]);
-            }
+            //}
 
             for(int i=0;i<branchList.size();i++){
                 //System.out.println("beni edo??");
@@ -647,7 +644,7 @@ public class Queries {
                         continue;
                     }
                     if (minDist > minMaxDist(point, branchList.get(j).getRectangle())) {
-                        branchList.remove(i);
+                        branchList.remove(branchList.get(i));
                         i--;
                         break;
                     }
@@ -666,8 +663,14 @@ public class Queries {
 
         TreeNode temp1;
 
+        if(branchList.size()<=1){
+            return;
+        }
         for(int i=0; i < branchList.size(); i++){
             for(int j=1; j < (branchList.size()-i); j++){
+                System.out.println(i + " " + j);
+                System.out.println(branchList.size());
+                System.out.println(branchList.get(j-1));
                 if(minMaxDist(p,branchList.get(j-1).getRectangle()) > minMaxDist(p,branchList.get(j).getRectangle())){
                     //swap elements
                     temp1 = branchList.get(j-1);
@@ -685,6 +688,15 @@ public class Queries {
 
     /////////////////////--------------------K-NN-algorithm---------------------////////////////////////////
 
+
+
+
+
+    //////////////////////////////////////test////////////////////////////////////////////
+
+
+
+    /////////////////////////////////////test/////////////////////////////////////////////
 
     /**
      * Linear search of the k nearest neighbour

@@ -8,6 +8,13 @@ public class LeafNode implements TreeNode {
     private Context context;
     private TreeNode parent;
 
+    /**
+     * The constructor
+     * @param entries the Entries of this leaf node
+     * @param rectangle the mbr of this leaf node
+     * @param context the context of this particular r*-tree
+     * @param parent this leaf's parent
+     */
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context, TreeNode parent){
         this.entries = entries;
         this.rectangle = rectangle;
@@ -16,6 +23,12 @@ public class LeafNode implements TreeNode {
     }
 
 
+    /**
+     * The constructor
+     * @param entries the Entries of this leaf node
+     * @param rectangle the mbr of this leaf node
+     * @param context the context of this particular r*-tree
+     */
     public LeafNode (List<Entry> entries, Rectangle rectangle, Context context){
         this.entries = entries;
         this.rectangle = rectangle;
@@ -23,6 +36,12 @@ public class LeafNode implements TreeNode {
         this.parent = null;
     }
 
+    /**
+     * The constructor
+     * @param entries the Entries of this leaf node
+     * @param context the context of this particular r*-tree
+     * @param parent this leaf's parent
+     */
     public LeafNode(List<Entry> entries, Context context, TreeNode parent){
         this.entries = entries;
         this.context = context;
@@ -30,6 +49,11 @@ public class LeafNode implements TreeNode {
         fixMbr();
     }
 
+    /**
+     * The constructor
+     * @param entries the Entries of this leaf node
+     * @param context the context of this particular r*-tree
+     */
     public LeafNode(List<Entry> entries, Context context){
         this.entries = entries;
         this.context = context;
@@ -38,31 +62,61 @@ public class LeafNode implements TreeNode {
     }
 
 
-
+    /**
+     *
+     * @return how many children this leaf has
+     */
     public int childrenSize(){
         return entries.size();
     }
 
+    /**
+     *
+     * @return the Context object of this tree
+     */
     public Context context() {
         return context;
     }
 
+    /**
+     *
+     * @param i index of the particular child
+     * @return this particular child
+     */
     public Entry entryChild(int i) {
         return entries.get(i);
     }
 
+    /**
+     *
+     * @return list of the entries
+     */
     public List<Entry> entries(){
         return entries;
     }
 
+    /**
+     *
+     * @return the rectangle of this leaf node
+     */
     public Rectangle getRectangle(){
         return rectangle;
     }
 
+    /**
+     *
+     * @param i index of non leaf tree node child
+     * @return this particular child
+     */
     public TreeNode child(int i) {
         return null;
     }
 
+    /**
+     *
+     * @param entry the entry we want to add to this leaf node
+     * @param <T>
+     */
     public <T extends HasGeometry> void add(T entry){
 
         if (entry instanceof Entry){
@@ -79,23 +133,41 @@ public class LeafNode implements TreeNode {
         }
     }
 
+    /**
+     * Fixes the Mbr(minimum bounding rectangle) of this node
+     */
     public void fixMbr(){
         rectangle = Utils.mbr(this);
     }
 
+    /**
+     * Returns the parent
+     * @return the parent of this node
+     */
     public TreeNode getParent(){
         return parent;
     }
 
+    /**
+     * Sets a new parent
+     * @param parent the new parent we want to set
+     */
     public void setParent(TreeNode parent){
         this.parent = parent;
     }
 
-
+    /**
+     * Deletes an entry(for leaf nodes)
+     * @param e the entry we want to delete
+     */
     public void deleteChild(Entry e){
         entries.remove(e);
     }
 
+    /**
+     * Deletes a child node(for non leaf node)
+     * @param tn the node we want to delete
+     */
     public void deleteChild(TreeNode tn){
         //return;
     }

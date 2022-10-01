@@ -46,18 +46,37 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
         //
     }
 
+    /**
+     * The constructor
+     * @param v1 feature vector array of the first point of the rectangle
+     * @param v2 feature vector array of the second point of the rectangle
+     */
     public Rectangle(double[] v1, double[] v2){
         this.vector1 = v1;
         this.vector2 = v2;
     }
+
+
+    /**
+     *
+     * @return the first vector of the rectangle
+     */
     public double[] getVector1(){
         return vector1;
     }
 
+    /**
+     *
+     * @return the second vector of the rectangle
+     */
     public double[] getVector2(){
         return vector2;
     }
 
+    /**
+     *
+     * @return the size of the feature vector
+     */
     public int getSize(){
         return vector1.length;
     }
@@ -83,11 +102,20 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
         return 0;
     }
 
+    /**
+     *
+     * @return this rectangle object
+     */
     @Override
     public Rectangle mbr(){
         return this;
     }
 
+    /**
+     * Checks if this rectangle intersects with another rectangle
+     * @param r a rectangle
+     * @return if they intersect returns true, else false
+     */
     @Override
     public boolean intersects(Rectangle r){
         double[] featVec1 = r.getVector1();
@@ -124,6 +152,10 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
         return new Rectangle(vec1,vec2).area();
     }
 
+    /**
+     *
+     * @return the perimeter of the rectangle
+     */
     public double perimeter()
     {
         double perimeter = Arrays.stream(vector1).sum();       // The math equation used to find the perimeter
@@ -163,6 +195,12 @@ public final class Rectangle implements Geometry, HasGeometry, Serializable {
         System.out.println();
     }
 
+
+    /**
+     * Check equality between two rectangles
+     * @param r a rectangle
+     * @return if they are equal returns true, else false
+     */
     public boolean isEqualTo(Rectangle r){
         for(int i=0;i<vector1.length;i++){
             if(vector1[i] != r.vector1[i]){
