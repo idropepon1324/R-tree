@@ -34,10 +34,6 @@ public class PosNode<T extends Geometry> implements Serializable {
         return name;
     }
 
-    public int getDim() {
-        return dim;
-    }
-
     public double[] getFeatVec() {
         return featVec;
     }

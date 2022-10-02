@@ -102,7 +102,7 @@ public class Main  {
         vec2[1] = 40.0;
         area = new Rectangle(vec1.clone(), vec2.clone());
         double[] point = vec2.clone();
-        int k = 15;
+        int k = 10;
 
         // Compare execution times
         System.out.println("Entries size: "+entries.size());
@@ -117,7 +117,7 @@ public class Main  {
         ExecutionTimes.skylineWithLinear(entries);
 
         // Testing times with Random entries.
-        testingRandom(10000, 2);
+        //testingRandom(10000, 2);
 
 
     } // End of main
@@ -168,9 +168,6 @@ public class Main  {
 
         ExecutionTimes.knnSearchWithIndex(rTree, point, k);
         ExecutionTimes.knnSearchWithLinear(entries, point, k);
-
-        ExecutionTimes.skylineWithIndex(rTree);
-        ExecutionTimes.skylineWithLinear(entries);
 
 
     }

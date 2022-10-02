@@ -1,5 +1,9 @@
 import java.io.Serializable;
 
+/**
+ * This class represents the general information for its block that is saved.
+ * It is saved in the block 0, with the help of the DataInfo Class.
+ */
 public class Block implements Serializable {
     private int records;
 

@@ -1,7 +1,7 @@
 import java.io.File;
 
 /** This is a abstract class for file management.
- *  It contains the general methods for a file
+ *  It contains the general methods for using a file
  *  and it is used as a super class for others to inherit.
  *
  */

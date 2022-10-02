@@ -47,16 +47,17 @@ public final class DataInfo implements Serializable {
         this.blocks = blocks;
     }
 
+    // Add a block object to the Block 0 info
     public void addBlock(Block block) {
         blocks.add(block);
         totalRecords += block.getRecords();
         totalBlocks++;
     }
 
-    public void printInfo(){
-        System.out.println("=====================");
-        System.out.println("Total Blocks: "+totalBlocks);
-        System.out.println("Total Records: "+ totalRecords);
-        System.out.println("=====================");
-    }
+//    public void printInfo(){
+//        System.out.println("=====================");
+//        System.out.println("Total Blocks: "+totalBlocks);
+//        System.out.println("Total Records: "+ totalRecords);
+//        System.out.println("=====================");
+//    }
 }

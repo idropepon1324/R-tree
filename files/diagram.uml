@@ -3,107 +3,105 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="0.0" y="690.0">com</node>
-    <node x="465.625" y="80.0">PosNode</node>
-    <node x="370.0" y="615.0">Dictionary</node>
-    <node x="471.0" y="765.0">Options</node>
-    <node x="221.0" y="540.0">netscape</node>
-    <node x="620.0" y="765.0">Queries</node>
-    <node x="325.625" y="80.0">Rectangle</node>
-    <node x="0.0" y="315.0">Loader</node>
-    <node x="192.0" y="0.0">HasGeometry</node>
-    <node x="116.0" y="315.0">Saver</node>
+    <node x="527.0" y="615.0">com</node>
+    <node x="453.625" y="80.0">PosNode</node>
+    <node x="181.0" y="615.0">Dictionary</node>
+    <node x="157.0" y="765.0">Options</node>
+    <node x="0.0" y="540.0">netscape</node>
+    <node x="306.0" y="765.0">Queries</node>
+    <node x="313.625" y="80.0">Rectangle</node>
+    <node x="108.0" y="315.0">Loader</node>
+    <node x="0.0" y="315.0">Saver</node>
+    <node x="180.0" y="0.0">HasGeometry</node>
     <node x="0.0" y="390.0">toolbarButtonGraphics</node>
-    <node x="149.0" y="840.0">Insert</node>
-    <node x="165.0" y="690.0">sun</node>
+    <node x="604.0" y="765.0">Insert</node>
+    <node x="0.0" y="690.0">sun</node>
     <node x="277.0" y="465.0">groovyjarjarasm</node>
-    <node x="217.625" y="80.0">Entry</node>
-    <node x="543.0" y="615.0">java</node>
-    <node x="0.0" y="160.0">NotLeafNode</node>
-    <node x="538.0" y="465.0">LeafNodeFunctions</node>
-    <node x="189.0" y="615.0">javax</node>
-    <node x="85.625" y="80.0">TreeNode</node>
-    <node x="156.0" y="160.0">LeafNode</node>
-    <node x="290.0" y="840.0">Search</node>
-    <node x="660.0" y="690.0">Deletion</node>
+    <node x="205.625" y="80.0">Entry</node>
+    <node x="354.0" y="615.0">java</node>
+    <node x="132.0" y="160.0">NotLeafNode</node>
+    <node x="0.0" y="615.0">javax</node>
+    <node x="73.625" y="80.0">TreeNode</node>
+    <node x="0.0" y="840.0">Search</node>
+    <node x="0.0" y="160.0">LeafNode</node>
+    <node x="495.0" y="690.0">Deletion</node>
     <node x="309.0" y="390.0">groovyjarjarpicocli</node>
-    <node x="0.0" y="765.0">Selector</node>
-    <node x="0.0" y="840.0">Context</node>
-    <node x="157.0" y="765.0">DataInfo</node>
-    <node x="631.0" y="540.0">images</node>
-    <node x="314.0" y="765.0">Splitter</node>
-    <node x="330.0" y="690.0">org</node>
-    <node x="24.0" y="235.0">FileManagement</node>
-    <node x="0.0" y="540.0">NonLeafFunctions</node>
-    <node x="495.0" y="690.0">jdk</node>
-    <node x="426.0" y="540.0">META-INF</node>
-    <node x="410.625" y="0.0">Geometry</node>
-    <node x="0.0" y="615.0">groovy</node>
-    <node x="431.0" y="840.0">Utils</node>
-    <node x="564.0" y="840.0">Block</node>
+    <node x="652.0" y="690.0">DataInfo</node>
+    <node x="455.0" y="765.0">Context</node>
+    <node x="410.0" y="540.0">images</node>
+    <node x="0.0" y="765.0">Splitter</node>
+    <node x="165.0" y="690.0">org</node>
+    <node x="20.0" y="235.0">FileManagement</node>
+    <node x="538.0" y="465.0">NonLeafFunctions</node>
+    <node x="330.0" y="690.0">jdk</node>
+    <node x="205.0" y="540.0">META-INF</node>
+    <node x="398.625" y="0.0">Geometry</node>
+    <node x="599.0" y="540.0">groovy</node>
+    <node x="141.0" y="840.0">Utils</node>
+    <node x="274.0" y="840.0">Block</node>
     <node x="249.0" y="235.0">groovyjarjarcommonscli</node>
-    <node x="697.0" y="840.0">RTree</node>
+    <node x="407.0" y="840.0">RTree</node>
     <node x="0.0" y="465.0">groovyjarjarantlr</node>
-    <node x="0.0" y="915.0">Main</node>
+    <node x="540.0" y="840.0">Main</node>
   </nodes>
   <notes />
   <edges>
     <edge source="TreeNode" target="HasGeometry">
       <point x="0.0" y="-15.0" />
-      <point x="141.625" y="55.0" />
-      <point x="214.66666666666669" y="55.0" />
+      <point x="129.625" y="55.0" />
+      <point x="202.66666666666669" y="55.0" />
       <point x="-45.333333333333314" y="15.0" />
     </edge>
     <edge source="Entry" target="HasGeometry">
       <point x="0.0" y="-15.0" />
-      <point x="261.625" y="55.0" />
-      <point x="260.0" y="55.0" />
+      <point x="249.625" y="55.0" />
+      <point x="248.0" y="55.0" />
       <point x="0.0" y="15.0" />
     </edge>
     <edge source="NotLeafNode" target="TreeNode">
       <point x="0.0" y="-15.0" />
-      <point x="68.0" y="135.0" />
-      <point x="113.625" y="135.0" />
-      <point x="-28.0" y="15.0" />
+      <point x="200.0" y="135.0" />
+      <point x="157.625" y="135.0" />
+      <point x="28.0" y="15.0" />
     </edge>
     <edge source="Rectangle" target="HasGeometry">
       <point x="-30.0" y="-15.0" />
-      <point x="355.625" y="55.0" />
-      <point x="305.33333333333337" y="55.0" />
+      <point x="343.625" y="55.0" />
+      <point x="293.33333333333337" y="55.0" />
       <point x="45.33333333333337" y="15.0" />
     </edge>
     <edge source="Rectangle" target="Geometry">
       <point x="30.0" y="-15.0" />
-      <point x="415.625" y="55.0" />
-      <point x="438.625" y="55.0" />
+      <point x="403.625" y="55.0" />
+      <point x="426.625" y="55.0" />
       <point x="-28.0" y="15.0" />
     </edge>
     <edge source="LeafNode" target="TreeNode">
       <point x="0.0" y="-15.0" />
-      <point x="212.0" y="135.0" />
-      <point x="169.625" y="135.0" />
+      <point x="56.0" y="135.0" />
+      <point x="101.625" y="135.0" />
+      <point x="-28.0" y="15.0" />
+    </edge>
+    <edge source="PosNode" target="Geometry">
+      <point x="0.0" y="-15.0" />
+      <point x="505.625" y="55.0" />
+      <point x="482.625" y="55.0" />
       <point x="28.0" y="15.0" />
     </edge>
     <edge source="Loader" target="FileManagement">
       <point x="0.0" y="-15.0" />
-      <point x="48.0" y="290.0" />
-      <point x="64.0" y="290.0" />
-      <point x="-40.0" y="15.0" />
-    </edge>
-    <edge source="PosNode" target="Geometry">
-      <point x="0.0" y="-15.0" />
-      <point x="517.625" y="55.0" />
-      <point x="494.625" y="55.0" />
-      <point x="28.0" y="15.0" />
+      <point x="156.0" y="290.0" />
+      <point x="140.0" y="290.0" />
+      <point x="40.0" y="15.0" />
     </edge>
     <edge source="Saver" target="FileManagement">
       <point x="0.0" y="-15.0" />
-      <point x="160.0" y="290.0" />
-      <point x="144.0" y="290.0" />
-      <point x="40.0" y="15.0" />
+      <point x="44.0" y="290.0" />
+      <point x="60.0" y="290.0" />
+      <point x="-40.0" y="15.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.9943005181347151" x="566.0" y="448.92027097446584" />
+  <settings layout="Hierarchic Group" zoom="0.9943005181347151" x="566.0" y="316.92027097446584" />
   <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
